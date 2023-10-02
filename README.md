@@ -1,1 +1,1 @@
-# JiraReact
+# JipsReact
