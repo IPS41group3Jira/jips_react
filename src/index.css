@@ -1,3 +1,7 @@
+:root{
+  --navigation-color: #dee3ef;
+  --navigation-active-color:#BFC7DC;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
