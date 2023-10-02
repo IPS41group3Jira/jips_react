@@ -1,0 +1,10 @@
+.input {
+    --input-border-radius: 4px;
+    --input-border-colour: #C0C0C0;
+
+    padding: .25em .5em;
+    border-radius: var(--input-border-radius);
+    border: 2px solid var(--input-border-colour);
+    user-select: none;
+    outline: none;
+}
