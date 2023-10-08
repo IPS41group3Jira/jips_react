@@ -4,6 +4,10 @@
   
   --purple-color: #4946C8;
   --background-color: #EEEFF2;
+
+  --gray-color: #E4E4E4;
+  --task-state-color: #D9D9D9;
+  --gray-font-color: #545151;
 }
 
 body {
