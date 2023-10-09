@@ -1,7 +1,7 @@
 import './Login.css'
 import {Container, Form} from "react-bootstrap";
-import Input from "../Input/Input";
-import Button from "../Button/Button";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
 export default function Login() {
     return(
         <Container>
