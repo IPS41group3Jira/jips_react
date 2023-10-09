@@ -10,14 +10,12 @@ export default function Header() {
 			<header>
 				<Navbar>
 					<Navbar.Brand href="/" className="brand">JIPS</Navbar.Brand>
-					<Nav.Link href="/">New Task</Nav.Link>
 					<Nav.Link href="/">Project</Nav.Link>
-					<Nav.Link href="/">Dashboards</Nav.Link>
-					<Nav.Link href="/">Teams</Nav.Link>
-					<Nav.Link href="/">Messages</Nav.Link>
+					<Nav.Link href="/">Tasks</Nav.Link>
+					<Nav.Link href="/">Users</Nav.Link>
 				</Navbar>
 				<div className="header__controls">
-					<Input placeholder="Search for project" />
+					
 				</div>
 				{/* Brand */}
 				{/* Navbar */}
