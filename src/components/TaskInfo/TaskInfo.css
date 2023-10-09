@@ -1,4 +1,4 @@
-.task_info{
+.task_info {
     background-color: var(--gray-color);
     padding: 10px 18px;
     width: 450px;
@@ -8,30 +8,36 @@
     color: var(--gray-font-color);
 
 }
-.task_state, .task_title, .comments_info, .creation_info{
+.task_state,
+.task_title,
+.comments_info,
+.creation_info {
     display: flex;
     align-items: center;
 
 }
-.task_state{
+
+.task_state {
     background-color: var(--task-state-color);
     border-radius: 8px;
     font-weight: 600;
 
 }
-.creation_info{
+
+.creation_info {
     justify-content: end;
 }
-.comments_info{
 
-}
-.time, .count{
+.time,
+.count {
     padding-right: 10px;
 }
-.icon_account{
+
+.icon_account {
     font-size: 28px;
 }
-.form-select{
+
+.form-select {
     border: none !important;
     outline: none ;
     box-shadow: none !important;
