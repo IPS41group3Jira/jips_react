@@ -1,4 +1,4 @@
-import './Registration.css'
+import './Authorization.css'
 import {Container, Form} from "react-bootstrap";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
