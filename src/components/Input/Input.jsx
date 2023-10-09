@@ -1,5 +1,5 @@
 import "./Input.css"
 
-export default function Input () {
-  return <input className="input" />;
+export default function Input (attrs) {
+  return <input className="input" attrs />;
 }

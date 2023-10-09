@@ -1,6 +1,7 @@
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Input from "../Input/Input";
+import { VscAccount } from "react-icons/vsc";
+import { GoGear } from "react-icons/go";
 
 import "./Header.css";
 
@@ -15,7 +16,8 @@ export default function Header() {
 					<Nav.Link href="/">Users</Nav.Link>
 				</Navbar>
 				<div className="header__controls">
-					
+					<a href="/login" className='header_control'><GoGear className="icon_gear" /></a>
+					<a href="/login" className='header_control'><VscAccount className="icon_account"/></a>
 				</div>
 				{/* Brand */}
 				{/* Navbar */}

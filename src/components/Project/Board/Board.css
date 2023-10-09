@@ -1,0 +1,55 @@
+.board {
+    padding: 1em 2em;
+    flex-grow: 1;
+    background-color: var(--background-color);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.board__header [name=project-name] {
+    font-weight: 600;
+    font-size: 26px;
+}
+
+.board__controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+.board__controls > div {
+    display: flex;
+    gap: 2em;
+}
+
+.board__body {
+    flex-grow: 1;
+
+    display: flex;
+    gap: 2em;
+
+    margin-top: 2em;
+
+    overflow: auto;
+}
+
+.project-stage {
+    background-color: white;
+    width: clamp(20em, 100%, 30em);
+    border: 1px solid lightgray;
+
+    box-shadow: 0 0 2px 1px lightgray;
+    padding: .5em 1em;
+}
+
+.project-stage .project-stage__caption {
+    font-weight: 600;
+    font-size: 22px;
+    margin-bottom: .5em;
+}
+
+.project-stage .project-stage__tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
