@@ -1,6 +1,7 @@
 import Header from "../../components/Header/Header";
 import ProjectRoutes from "../../components/ProjectRoutes/ProjectRoutes";
 import TaskInfo from "../../components/TaskInfo/TaskInfo";
+import Login from "../../components/Login/Login";
 
 export default function Main() {
 	return (
@@ -13,6 +14,7 @@ export default function Main() {
 				commentsCount={3}
 				createdTime="10 hours"
 			/>
+			{/*<Login/>*/}
 		</>
 	)
 }

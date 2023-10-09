@@ -1,0 +1,11 @@
+.button{
+    --button-color: #BFC7DC;
+
+    padding: .2em 2.25em;
+    border-radius: 2px;
+    border: 2px solid var(--button-color);
+    background-color: var(--button-color);
+
+    font-weight: 700;
+    /*font-size: 24px;*/
+}
