@@ -5,16 +5,16 @@ import Button from "../../components/Button/Button";
 export default function Login() {
     return(
         <Container>
-            <div className="authorization">
-                <h3>Authorization form</h3>
-                <Form className="form">
+            <div  className="authorization">
+                <label>Authorization form</label>
+                <Form className="authorization-form" name="login-form">
                     <Form.Group >
                         <Form.Label>Login</Form.Label>
-                        <div><Input /></div>
+                        <Input />
                     </Form.Group>
                     <Form.Group >
                         <Form.Label>Password</Form.Label>
-                        <div><Input /></div>
+                        <Input />
                     </Form.Group>
                     <Button text="Submit" />
                 </Form>
