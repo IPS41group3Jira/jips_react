@@ -6,7 +6,6 @@
   --background-color: #EEEFF2;
 
   --gray-color: #E4E4E4;
-  --task-state-color: #D9D9D9;
   --gray-font-color: #545151;
 }
 
@@ -38,5 +37,10 @@ main {
 .icon_gear,
 .icon_account {
   --icon-size: 28px;
+  font-size: var(--icon-size);
+}
+
+.icon_arrow {
+  --icon-size: 20px;
   font-size: var(--icon-size);
 }
