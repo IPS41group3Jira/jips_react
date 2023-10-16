@@ -16,7 +16,7 @@ export default function Registration() {
     }
     return (
         <>
-            <Container>
+            <Container className="d-flex justify-content-center">
                 <div  className="authorization">
                     <label>Create an account</label>
                     <Form className="authorization-form" name="register-form">
