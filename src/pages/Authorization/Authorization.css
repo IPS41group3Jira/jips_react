@@ -1,3 +1,6 @@
+body {
+    background-image: radial-gradient(circle at 50% -20.71%, #d452ec 0, #bb49ef 16.67%, #9d42f0 33.33%, #783cf2 50%, #3f39f3 66.67%, #0038f5 83.33%, #0039f6 100%);
+}
 .authorization {
     display: flex;
     flex-direction: column;
@@ -12,7 +15,9 @@
 }
 
 .authorization > label {
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 1.5em;
+    color: var(--purple-color);
 }
 
 .authorization-form {
@@ -26,8 +31,46 @@
 .authorization-form > div {
     display: flex;
     flex-direction: column;
+    margin: .6em 0;
 }
 
 .authorization-form > div > label {
     margin: 0;
 }
+
+.authorization-form > div > span {
+    font-size: 11px;
+}
+
+.authorization-check,
+.authorization-form > label {
+    font-size: .9rem;
+    margin: .4em 0;
+}
+
+.authorization-input {
+    --input-border-colour: #58678F;
+    border-bottom: 1px solid var(--input-border-colour);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+    background-color: transparent;
+    width: 15em;
+}
+
+.authorization-link {
+    text-decoration: none;
+    color: var(--purple-color);
+}
+
+.password-group {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 1em;
+    top: .3em;
+}
+
