@@ -1,7 +1,7 @@
 import './Board.css';
 
 import Buttton from '../../Button/Button';
-import Input from '../../Input/Input';
+import Input from '../../Controls/Input/Input';
 import TaskInfo from '../../TaskInfo/TaskInfo';
 
 export default function Board() {
@@ -12,7 +12,7 @@ export default function Board() {
                     <label name="project-name">Project name</label>
                     <div className="board__controls">
                         <div>
-                            <Input name="search" placeholder="Search..." />
+                            <Input className="className" name="search" placeholder="Search..." />
                             <Input name="pearson-filter" placeholder="Person" />
                         </div>
                         <Buttton text="New task" />
