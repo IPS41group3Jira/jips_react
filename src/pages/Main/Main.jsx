@@ -4,6 +4,7 @@ import TaskInfo from "../../components/TaskInfo/TaskInfo";
 import Login from "../Authorization/Login";
 import Board from '../../components/Project/Board/Board';
 import './Main.css'
+import ProjectDetails from "../../components/ProjectDetails/ProjectDetails";
 
 export default function Main() {
 	return (

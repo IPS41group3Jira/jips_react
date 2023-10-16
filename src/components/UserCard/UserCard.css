@@ -1,0 +1,38 @@
+.user-card {
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    background: #EEEFF2;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.user-card__name{
+    font-size: 18px;
+    font-weight: 600;
+    color: #676767;
+}
+.editing-user {
+    width: 25%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-card__info {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-close {
+    color: red;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+}
+.editing-user__link{
+    cursor: pointer;
+    text-decoration: none;
+    color: #58678F;
+    font-size: 16px;
+}
