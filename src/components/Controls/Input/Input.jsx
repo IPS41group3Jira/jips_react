@@ -5,8 +5,9 @@ export default function Input({ className, value, onChange, ...attrs }) {
 
 	const [val, setVal] = useState(value || null);
 
-	const handleChange = () => {
-		if (typeof onChange == 'function') onChange(this);
+	const handleChange = (event) => {
+		if (typeof onChange == 'function') onChange(event);
+		setVal(event.target.value);
 	}
 
 	className = `input ${className || ''}`;
