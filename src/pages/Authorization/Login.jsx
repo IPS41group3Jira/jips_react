@@ -14,7 +14,7 @@ export default function Login() {
     }
     return (
         <>
-            <Container>
+            <Container className=" d-flex justify-content-center">
                 <div className="authorization">
                     <label>Log in</label>
                     <Form className="authorization-form" name="login-form">
