@@ -1,0 +1,35 @@
+.task-creation-form{
+    background-color: #fff;
+    padding: 0 3em;
+    width: 70em;
+}
+
+.task-description {
+    width: 100%;
+}
+
+.task-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-creation-form > div,
+.task-time > div {
+    margin-bottom: 1em;
+}
+
+.list-items {
+    color: var(--gray-font-color);
+    font-size: .9em;
+}
+
+.label {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.btn {
+    text-align: center;
+    width: 100%;
+}
+

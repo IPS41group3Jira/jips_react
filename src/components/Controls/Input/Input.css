@@ -1,4 +1,5 @@
-.input {
+.input,
+.textarea {
     --input-border-radius: 4px;
     --input-border-colour: #C0C0C0;
     --input-background-color: #F6F5F5;
