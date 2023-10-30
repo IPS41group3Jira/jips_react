@@ -1,10 +1,23 @@
+import React, { useState } from 'react';
 import './Board.css';
 
 import Buttton from '../../Button/Button';
 import Input from '../../Controls/Input/Input';
 import TaskInfo from '../../TaskInfo/TaskInfo';
+import Modal from '../../Modal/Modal';
+import ProjectDetails from '../../ProjectDetails/ProjectDetails';
 
 export default function Board() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+    
     return (
         <>
             <div className="board">
@@ -15,7 +28,7 @@ export default function Board() {
                             <Input className="className" name="search" placeholder="Search..." />
                             <Input name="pearson-filter" placeholder="Person" />
                         </div>
-                        <Buttton text="New task" />
+                        <Buttton text="New task" onClick={openModal} />
                     </div>
                 </div>
                 <div className="board__body">
@@ -48,6 +61,10 @@ export default function Board() {
                     </div>
                 </div>
             </div>
+
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
+                <ProjectDetails />
+            </Modal>
         </>
     );
 };

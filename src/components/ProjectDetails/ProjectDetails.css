@@ -1,13 +1,7 @@
 .project-details-block {
-    width: 70%;
-    position: absolute;
-    z-index: 100;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #ffff;
-    padding: 30px;
-    border: 2px solid #535353;
+    width: 70em;
+    background-color: var(--modal-background-color);
+    padding: 2em;
 }
 
 .project-text {

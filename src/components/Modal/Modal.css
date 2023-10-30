@@ -1,0 +1,36 @@
+.ui-modal-wrapper {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ui-modal {
+    width: fit-content;
+    height: fit-content;
+}
+
+.ui-modal__header {
+    background-color: var(--modal-background-color);
+    display: flex;
+    justify-content: end;
+    padding: .5em;
+    gap: .5em;
+}
+
+.ui-modal__header > button {
+    border: none;
+    background: none;
+
+    border-radius: 4px;
+}
+
+.ui-modal__header > button:hover {
+    background-color: rgba(108, 108, 108, 0.195);
+}
