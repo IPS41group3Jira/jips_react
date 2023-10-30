@@ -1,20 +1,25 @@
 import './TaskInfo.css'
 import {Col, Container, Form, Row} from "react-bootstrap";
 import {BiCommentDetail} from "react-icons/bi";
-import {VscAccount} from "react-icons/vsc";
+import { VscAccount } from "react-icons/vsc";
+import Select from '../Controls/Select/Select';
+import Option from '../Controls/Select/Option';
 
-export default function TaskInfo({title, status, commentsCount, createdTime}) {
+export default function TaskInfo({ title, status, commentsCount, createdTime }) {
+    const onChangeSelect = (value, label) => {
+        alert(value);
+    }
+
     return (
             <div className="task_info d-flex flex-column">
                 <Row className="mb-auto">
                     <Col sm={6} className="task_title"><span>{title}</span></Col>
                     <Col sm={6} className="task_state">
-                        <span>State:</span>
-                        <Form.Select className="form-select" value={status}>
-                            <option value="New">New</option>
-                            <option value="in_progress">In progress</option>
-                            <option value="in_progress">Closed</option>
-                        </Form.Select>
+                    <Select value="New" labelBefore="State:" onChange={onChangeSelect}>
+                        <Option value="new">New</Option>
+                        <Option value="in_press">In progress</Option>
+                        <Option value="closed">Closed</Option>
+                    </Select>
                     </Col>
                 </Row>
                 <Row className="">

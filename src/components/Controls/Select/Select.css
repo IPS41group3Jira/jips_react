@@ -32,6 +32,7 @@
     list-style: none;
 
     border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: 0 3px 4px 0 rgb(184, 184, 184);
 }
 
 .select__options > .option {
