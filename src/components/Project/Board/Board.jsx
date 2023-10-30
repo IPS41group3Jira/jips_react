@@ -48,6 +48,48 @@ export default function Board() {
                                 commentsCount={3}
                                 createdTime="10 hours"
                             />
+                            <TaskInfo
+                                title="Create new task"
+                                status="New"
+                                commentsCount={3}
+                                createdTime="10 hours"
+                            />
+                            <TaskInfo
+                                title="Create new task"
+                                status="New"
+                                commentsCount={3}
+                                createdTime="10 hours"
+                            />
+                            <TaskInfo
+                                title="Create new task"
+                                status="New"
+                                commentsCount={3}
+                                createdTime="10 hours"
+                            />
+                            <TaskInfo
+                                title="Create new task"
+                                status="New"
+                                commentsCount={3}
+                                createdTime="10 hours"
+                            />
+                            <TaskInfo
+                                title="Create new task"
+                                status="New"
+                                commentsCount={3}
+                                createdTime="10 hours"
+                            />
+                             <TaskInfo
+                                title="Create new task"
+                                status="New"
+                                commentsCount={3}
+                                createdTime="10 hours"
+                            />
+                             <TaskInfo
+                                title="Create new task"
+                                status="New"
+                                commentsCount={3}
+                                createdTime="10 hours"
+                            />
                         </div>
                     </div>
 

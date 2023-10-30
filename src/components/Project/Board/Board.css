@@ -5,6 +5,12 @@
 
     display: flex;
     flex-direction: column;
+    overflow: auto;
+}
+
+.board__header {
+    position: sticky;
+    left: 0;
 }
 
 .board__header [name=project-name] {
@@ -35,11 +41,13 @@
 
 .project-stage {
     background-color: white;
-    width: clamp(20em, 100%, 30em);
+    min-width: 30em;
     border: 1px solid lightgray;
 
     box-shadow: 0 0 2px 1px lightgray;
     padding: .5em 1em;
+    display: flex;
+    flex-direction: column;
 }
 
 .project-stage .project-stage__caption {
@@ -49,7 +57,12 @@
 }
 
 .project-stage .project-stage__tasks {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 1em;
+
+    height: 0; /* used for scrolling*/
+
+    overflow-y: auto;
 }
