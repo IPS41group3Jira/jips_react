@@ -5,7 +5,6 @@ import Buttton from '../../Button/Button';
 import Input from '../../Controls/Input/Input';
 import TaskInfo from '../../TaskInfo/TaskInfo';
 import Modal from '../../Modal/Modal';
-import ProjectDetails from '../../ProjectDetails/ProjectDetails';
 import TaskCreation from "../../TaskCreation/TaskCreation";
 
 export default function Board() {
@@ -41,54 +40,63 @@ export default function Board() {
                                 status="New"
                                 commentsCount={3}
                                 createdTime="10 hours"
+                                showStatus="true"
                             />
                             <TaskInfo
                                 title="Create new task"
                                 status="New"
                                 commentsCount={3}
                                 createdTime="10 hours"
+                                showStatus="true"
                             />
                             <TaskInfo
                                 title="Create new task"
                                 status="New"
                                 commentsCount={3}
                                 createdTime="10 hours"
+                                showStatus="true"
                             />
                             <TaskInfo
                                 title="Create new task"
                                 status="New"
                                 commentsCount={3}
                                 createdTime="10 hours"
+                                showStatus="true"
                             />
                             <TaskInfo
                                 title="Create new task"
                                 status="New"
                                 commentsCount={3}
                                 createdTime="10 hours"
+                                showStatus="true"
                             />
                             <TaskInfo
                                 title="Create new task"
                                 status="New"
                                 commentsCount={3}
                                 createdTime="10 hours"
+                                showStatus="true"
                             />
                             <TaskInfo
                                 title="Create new task"
                                 status="New"
                                 commentsCount={3}
                                 createdTime="10 hours"
+                                showStatus="true"
                             />
                              <TaskInfo
                                 title="Create new task"
                                 status="New"
                                 commentsCount={3}
                                 createdTime="10 hours"
+                                showStatus="true"
                             />
                              <TaskInfo
                                 title="Create new task"
                                 status="New"
                                 commentsCount={3}
                                 createdTime="10 hours"
+                                showStatus="true"
                             />
                         </div>
                     </div>

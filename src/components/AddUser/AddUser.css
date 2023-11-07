@@ -1,0 +1,51 @@
+.add_user_form{
+    background-color: #fff;
+    padding: 0 3em 1em 3em;
+    width: 45em;
+}
+
+.add_user_form > div {
+    margin: 1em 0;
+}
+
+.add_user_form > div > label {
+    font-size: 1.3em;
+    font-weight: 500;
+}
+
+.add_user_input {
+    width: 100%;
+    height: 3em;
+    background-color: #fff;
+    border: .8px solid black;
+}
+.form_title {
+    text-align: center;
+}
+
+.select__role {
+    border: .8px solid black !important;
+    height: 3em !important;
+    font-weight: 400 !important;
+}
+.tasks-box{
+    max-height: 20em;
+    overflow-y: auto;
+    padding: .2rem 0;
+}
+.box_item {
+    display: flex;
+    width: 100%;
+    padding: .5em 0;
+    align-items: center;
+}
+.item_checkbox {
+    font-size: 30px;
+    padding: .5em;
+}
+
+.add_user_form__btn {
+    display: flex;
+    justify-content: center;
+    font-size: 1.2em;
+}
