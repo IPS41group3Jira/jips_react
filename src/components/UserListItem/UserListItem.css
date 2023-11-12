@@ -22,9 +22,14 @@
 .user-detail {
     padding: 0 1em;
 }
+.user-detail > label {
+    font-weight: 600;
+}
 .user-detail > p {
     margin: .1rem;
     color: var(--gray-color-text);
+    font-size: .9rem;
+    font-style: italic;
 }
 .user-manager {
     display: flex;
@@ -33,5 +38,7 @@
 }
 .user-manager > span{
     padding: 0 1em;
+    color: var(--purple-color-font);
+    font-weight: 500;
 }
 

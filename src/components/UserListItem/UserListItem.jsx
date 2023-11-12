@@ -20,7 +20,7 @@ export default function UserListItem({projects}) {
                             <label> Emily Smith</label>
                             {
                                 projects.slice(0, projectToShow).map((item) => (
-                                    <p key={item.id}>{item.project_name} {item.user_role}</p>
+                                    <p key={item.id}>{item.project_name} ({item.user_role})</p>
                                 ))
                             }
                         </div>
