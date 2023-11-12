@@ -1,0 +1,37 @@
+.user-list-item {
+    /*display: flex;*/
+
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1em .5em .4em;
+}
+.user-list-item > div > div{
+    display: flex;
+}
+.user-list-item_info {
+    display: flex;
+    justify-content: space-between;
+}
+.hidden-control {
+    display: flex;
+    justify-content: center;
+}
+.icon-account {
+    font-size: 4em;
+}
+.user-detail {
+    padding: 0 1em;
+}
+.user-detail > p {
+    margin: .1rem;
+    color: var(--gray-color-text);
+}
+.user-manager {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user-manager > span{
+    padding: 0 1em;
+}
+

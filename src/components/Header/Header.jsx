@@ -13,7 +13,7 @@ export default function Header() {
 					<Navbar.Brand href="/" className="brand">JIPS</Navbar.Brand>
 					<Nav.Link href="/">Project</Nav.Link>
 					<Nav.Link href="/">Tasks</Nav.Link>
-					<Nav.Link href="/">Users</Nav.Link>
+					<Nav.Link href="/users">Users</Nav.Link>
 				</Navbar>
 				<div className="header__controls">
 					<a href="/login" className='header_control'><GoGear className="icon_gear" /></a>

@@ -5,6 +5,7 @@ import Login from './pages/Authorization/Login';
 import Registration from './pages/Authorization/Registration';
 
 import { Routes, Route } from 'react-router-dom';
+import Users from "./pages/Users/Users";
 
 function App() {
 	return (
@@ -13,6 +14,7 @@ function App() {
 				<Route path="/" element={<Main />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/registration" element={<Registration /> } />
+				<Route path="/users" element={<Users />} />
 			</Routes>
 		</div>
 	);

@@ -6,6 +6,7 @@ import Input from '../../Controls/Input/Input';
 import TaskInfo from '../../TaskInfo/TaskInfo';
 import Modal from '../../Modal/Modal';
 import TaskCreation from "../../TaskCreation/TaskCreation";
+import {AddUser} from "../../AddUser/AddUser";
 
 export default function Board() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -114,7 +115,8 @@ export default function Board() {
             </div>
 
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <TaskCreation />
+                <AddUser />
+                {/*<TaskCreation />*/}
             </Modal>
         </>
     );

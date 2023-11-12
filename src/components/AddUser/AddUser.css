@@ -1,4 +1,6 @@
 .add_user_form{
+    --control-border: #535353;
+
     background-color: #fff;
     padding: 0 3em 1em 3em;
     width: 45em;
@@ -12,21 +14,36 @@
     font-size: 1.3em;
     font-weight: 500;
 }
-
+.add_user_form-input-group {
+    position: relative;
+}
 .add_user_input {
     width: 100%;
+    padding: .25em 2.7em .25em 1.1em;
     height: 3em;
     background-color: #fff;
-    border: .8px solid black;
+    border: .8px solid var(--control-border);
+}
+.icon-search {
+    color: var(--gray-color-text);
+    position: absolute;
+    right: .8em;
+    top: .6em;
+    font-size: 1.5em;
+
 }
 .form_title {
     text-align: center;
 }
 
 .select__role {
-    border: .8px solid black !important;
+
+    border: .8px solid var(--control-border) !important;
     height: 3em !important;
     font-weight: 400 !important;
+    padding: .25em 1.1em !important;
+    color: var(--gray-color-text) !important;
+
 }
 .tasks-box{
     max-height: 20em;
