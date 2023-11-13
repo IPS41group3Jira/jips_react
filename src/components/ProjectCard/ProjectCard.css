@@ -1,0 +1,23 @@
+.project-card {
+    background-color: #fff;
+    padding: 1em;
+    height: 7em;
+}
+.project-card_footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+}
+.project-card_main {
+    display: flex;
+    flex-direction: column;
+}
+.project-card_main > label {
+    font-weight: 700;
+    font-size: 1.5em;
+}
+.project-card_footer > a {
+    text-decoration: none;
+    color: var(--purple-color-font);
+    font-weight: 600;
+}

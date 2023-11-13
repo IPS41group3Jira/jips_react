@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function useAuth () { 
 
     const [User, setUser] = useState(null);
+    const [Projects, setProjects] = useState(null);
     
     const signIn = (email, password) => {
         return Axios.post('/user/login', { email, password }).then(resp => {
@@ -19,6 +20,9 @@ export default function useAuth () {
             setUser(user.data);
         }).catch(console.log);
     }
+    const getListProjects = () => {
+        return Axios.get('/user/projects')
+    }
 
     const signUp = (email, password, firstName, lastName) => {
         return Axios.post('/user/register', { email, password, firstName, lastName }).then(() => {
@@ -26,5 +30,5 @@ export default function useAuth () {
         }).catch(console.log);
     }
 
-    return { signIn, signUp, User };
+    return { signIn, signUp, User, getListProjects};
 }

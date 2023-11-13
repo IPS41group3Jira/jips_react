@@ -11,7 +11,7 @@ export default function Header() {
 			<header>
 				<Navbar>
 					<Navbar.Brand href="/" className="brand">JIPS</Navbar.Brand>
-					<Nav.Link href="/">Project</Nav.Link>
+					<Nav.Link href="/projects">Project</Nav.Link>
 					<Nav.Link href="/">Tasks</Nav.Link>
 					<Nav.Link href="/users">Users</Nav.Link>
 				</Navbar>

@@ -9,6 +9,7 @@ import Registration from './pages/Authorization/Registration';
 import { Routes, Route } from 'react-router-dom';
 import Users from "./pages/Users/Users";
 import useAuth from './Hooks/User';
+import Projects from "./pages/Projects/Projects";
 
 export const UserContext = createContext(null);
 
@@ -24,6 +25,7 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/registration" element={<Registration />} />
 					<Route path="/users" element={<Users />} />
+					<Route path="/projects" element={<Projects />} />
 				</Routes>
 			</div>
 		</UserContext.Provider>
