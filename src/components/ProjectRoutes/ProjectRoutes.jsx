@@ -1,12 +1,27 @@
 import './ProjectRoutes.css';
 import {LuClipboardList} from "react-icons/lu";
 import {FiCalendar, FiGrid, FiList} from "react-icons/fi";
-import {useState} from "react";
+import { useState } from "react";
+import Modal from '.././Modal/Modal';
+import ProjectDetails from '../ProjectDetails/ProjectDetails';
 export default function ProjectRoutes(){
     const [activeItems, setActiveItems] = useState('Work items');
     const handleItemClick = (item) => {
         setActiveItems(item);
+
+        openModal()
     }
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+    
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+    
     return(
         <>
             <div className="navigation-menu">
@@ -35,6 +50,9 @@ export default function ProjectRoutes(){
                     <span className="item-text">Calendar</span>
                 </div>
             </div>
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
+                <ProjectDetails />
+            </Modal>
         </>
     )
 }
