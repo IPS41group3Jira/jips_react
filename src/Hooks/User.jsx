@@ -22,7 +22,7 @@ export default function useAuth () {
 
     const signUp = (email, password, first_namme, last_name) => {
         return Axios.post('/user/register', { email, password, first_namme, last_name }).then(() => {
-            logIn(email, password); 
+            signIn(email, password); 
         });
     }
 

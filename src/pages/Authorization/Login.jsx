@@ -1,11 +1,12 @@
 import './Authorization.css'
 import React, { useEffect, useContext, useState } from 'react';
-
-import {Container, Form} from "react-bootstrap";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Container, Form } from "react-bootstrap";
 import Button from "../../components/Button/Button";
-import {Link} from "react-router-dom";
-import {FaEye, FaEyeSlash} from "react-icons/fa";
+import { Link } from "react-router-dom";
 
+
+import { useForm } from "react-hook-form";
 import { UserContext } from '../../App';
 
 export default function Login() {
