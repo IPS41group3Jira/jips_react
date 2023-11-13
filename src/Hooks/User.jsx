@@ -11,19 +11,19 @@ export default function useAuth () {
             localStorage.setItem('accessToken', resp.data);
             
             getUser();
-        });
+        }).catch(console.log);
     };
 
     const getUser = (id = '') => {
-        Axios.get(`/user/${id}`).then(user => {
+        return Axios.get(`/user/${id}`).then(user => {
             setUser(user.data);
-        });
+        }).catch(console.log);
     }
 
-    const signUp = (email, password, first_namme, last_name) => {
-        return Axios.post('/user/register', { email, password, first_namme, last_name }).then(() => {
-            signIn(email, password); 
-        });
+    const signUp = (email, password, firstName, lastName) => {
+        return Axios.post('/user/register', { email, password, firstName, lastName }).then(() => {
+            signIn(email, password);
+        }).catch(console.log);
     }
 
     return { signIn, signUp, User };

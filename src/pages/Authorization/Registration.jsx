@@ -1,51 +1,74 @@
 import './Authorization.css'
-import {Container, Form} from "react-bootstrap";
+
+import React, { useEffect, useContext, useState } from 'react';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Container, Form } from "react-bootstrap";
 import Button from "../../components/Button/Button";
-import {Link} from "react-router-dom";
-import {FaEye, FaEyeSlash} from "react-icons/fa";
-import {useState} from "react";
+import { Link } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
+import { UserContext } from '../../App';
+import { useForm } from "react-hook-form";
 
 export default function Registration() {
-    const [username, setUsername] = useState("")
-    const [first_name, setFirst_name] = useState("")
-    const [last_name, setLast_name] = useState("")
-    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+
+    const { signUp, User } = useContext(UserContext);
+    const { register, handleSubmit } = useForm();
+
     const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     }
+
+    useEffect(() => {
+        if (User) {
+            console.log(User);
+            navigate('/');
+        }
+    }, [User])
+
+    const onSubmit = (data, e) => {
+        const { email, password, firstName, lastName } = data;
+        signUp(email, password, firstName, lastName);
+    };
+
+    const onError = (errors, e) => {
+        for(let [field, error] of Object.entries(errors)) {
+            alert(`${field} is ${error.type}`);
+            break;
+        }
+    };
+
     return (
         <>
             <Container className="d-flex justify-content-center">
                 <div  className="authorization">
                     <label>Create an account</label>
-                    <Form className="authorization-form" name="register-form">
+                    <Form className="authorization-form" name="register-form" onSubmit={handleSubmit(onSubmit, onError)}>
                         <Form.Group >
-                            <input type="text" value={username} onChange={(e)=>setUsername(e.target.value)} placeholder="Username" className="authorization-input"/>
+                            <input type="text" placeholder="Username" className="authorization-input" { ...register('email', { required : true }) }/>
                         </Form.Group>
 
                         <Form.Group >
-                            <input type="text" value={first_name} onChange={(e)=>setFirst_name(e.target.value)} placeholder="First name" className="authorization-input"/>
+                            <input type="text" placeholder="First name" className="authorization-input" { ...register('lastName', { required : true }) }/>
                         </Form.Group>
 
                         <Form.Group >
-                            <input type="text" value={last_name} onChange={(e)=>setLast_name(e.target.value)} placeholder="Last name" className="authorization-input"/>
+                            <input type="text" placeholder="Last name" className="authorization-input" { ...register('firstName', { required : true }) }/>
                         </Form.Group>
 
                         <Form.Group className="password-group">
-                            <input
-                                type={showPassword ? 'text' : "password"}
-                                value={password}
-                                placeholder="Password"
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="authorization-input"/>
+                            <input type={showPassword ? 'text' : "password"} placeholder="Password" className="authorization-input" { ...register('password', { required : true }) } />
                             {showPassword ? (
                                 <FaEyeSlash onClick={togglePasswordVisibility} className="eye-icon"/>
                             ) : (
                                 <FaEye onClick={togglePasswordVisibility} className="eye-icon"/>
                             )}
                         </Form.Group>
-                        <label>Already have an account? <Link to="/login" className="authorization-link">Sign in</Link></label>
+                        <label>Already have an account?
+                            <Link to="/login" className="authorization-link">Sign in</Link>
+                        </label>
                         <Button text="Submit" />
                     </Form>
                 </div>

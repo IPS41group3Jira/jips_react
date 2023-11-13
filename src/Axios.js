@@ -18,4 +18,17 @@ Axios.interceptors.request.use(config => {
     return config;
 });
 
+Axios.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        const { response, config } = error;
+
+        alert(response.data);
+
+        return Promise.reject(error);
+    }
+);
+
 export default Axios;
