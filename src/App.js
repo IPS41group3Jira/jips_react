@@ -14,10 +14,10 @@ export const UserContext = createContext(null);
 
 function App() {
 
-	const { logIn, User } = useAuth();
+	const { signIn, signUp, User } = useAuth();
 
 	return (
-		<UserContext.Provider value={{ logIn, User }}>
+		<UserContext.Provider value={{ signIn, signUp, User }}>
 			<div className="App">
 				<Routes>
 					<Route path="/" element={<Main />} />

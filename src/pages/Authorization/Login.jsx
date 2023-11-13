@@ -9,7 +9,7 @@ import {FaEye, FaEyeSlash} from "react-icons/fa";
 import { UserContext } from '../../App';
 
 export default function Login() {
-    const { logIn, User } = useContext(UserContext);
+    const { signIn, User } = useContext(UserContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -19,7 +19,7 @@ export default function Login() {
     }
 
     const someFunc = () => {
-        logIn('m.plaksyuk@gmail.com', '123123123').then(() => {
+        signIn('m.plaksyuk@gmail.com', '123123123').then((resp) => {
             console.log(User);
         });
     }
