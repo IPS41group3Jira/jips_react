@@ -9,8 +9,8 @@
 }
 
 .board__header {
-    position: sticky;
-    left: 0;
+    /* position: sticky; */
+    /* left: 0; */
 }
 
 .board__header [name=project-name] {
