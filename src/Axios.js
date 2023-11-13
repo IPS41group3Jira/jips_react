@@ -1,6 +1,8 @@
 import a from "axios"
 
-const baseurl = "http://localhost:8081/api";
+let config = require('./config.json');
+
+const baseurl = `${config.host}/api`;
 
 const Axios = a.create({
     baseURL: baseurl
