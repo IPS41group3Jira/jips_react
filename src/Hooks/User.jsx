@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function useAuth () { 
+    const navigate = useNavigate();
 
     const [User, setUser] = useState(null);
     const [Projects, setProjects] = useState(null);
@@ -18,7 +19,9 @@ export default function useAuth () {
     const getUser = (id = '') => {
         return Axios.get(`/user/${id}`).then(user => {
             setUser(user.data);
-        }).catch(console.log);
+        }).catch(() => {
+            navigate('/login');
+        });
     }
     const getListProjects = () => {
         return Axios.get('/user/projects')
@@ -30,5 +33,5 @@ export default function useAuth () {
         }).catch(console.log);
     }
 
-    return { signIn, signUp, User, getListProjects};
+    return { signIn, signUp, User, getUser, getListProjects};
 }

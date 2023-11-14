@@ -6,7 +6,7 @@ import Main from './pages/Main/Main';
 import Login from './pages/Authorization/Login';
 import Registration from './pages/Authorization/Registration';
 
-import { Routes, Route } from 'react-router-dom';
+import { Navigate, Routes, Route } from 'react-router-dom';
 import Users from "./pages/Users/Users";
 import useAuth from './Hooks/User';
 import Projects from "./pages/Projects/Projects";
@@ -15,16 +15,22 @@ export const UserContext = createContext(null);
 
 function App() {
 
-	const { signIn, signUp, User } = useAuth();
+	const { getUser, signIn, signUp, User } = useAuth();
+
+	useEffect(() => {
+        if(!User) {
+            getUser();
+        }
+    }, [User])
 
 	return (
-		<UserContext.Provider value={{ signIn, signUp, User }}>
+		<UserContext.Provider value={{ getUser, signIn, signUp, User }}>
 			<div className="App">
 				<Routes>
-					<Route path="/" element={<Main />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/registration" element={<Registration />} />
-					<Route path="/users" element={<Users />} />
+					<Route path="/"         element={<Main />} />
+					<Route path="/users"    element={<Users />} />
 					<Route path="/projects" element={<Projects />} />
 				</Routes>
 			</div>

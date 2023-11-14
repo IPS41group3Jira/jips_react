@@ -23,10 +23,6 @@ Axios.interceptors.response.use(
         return response;
     },
     (error) => {
-        const { response, config } = error;
-
-        alert(response.data);
-
         return Promise.reject(error);
     }
 );
