@@ -13,6 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
  
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import TaskCreation from "../TaskCreation/TaskCreation";
 
 export default function ProjectDetails() {
     const [projectDetails, setProjectDetails] = useState({
@@ -21,7 +22,11 @@ export default function ProjectDetails() {
         start_date: "",
         end_date: ""
     })
+    const [tasks, setTasks] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     const handleInputChange = ((fieldName, value) => {
         setProjectDetails(prevProject => ({
@@ -29,16 +34,24 @@ export default function ProjectDetails() {
             [fieldName]: value
         }))
     })
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
     const openModal = () => {
         setIsModalOpen(true);
     };
 
+    const openModalTask = () => {
+        setIsModalTaskOpen(true);
+    };
     const closeModal = () => {
         setIsModalOpen(false);
     };
+    const closeModalTask = () => {
+        setIsModalTaskOpen(false);
+    };
 
+    const addTask = (newTask) => {
+        setTasks((prevTasks) => [...prevTasks, newTask])
+        console.log(tasks)
+    }
     const saveProject = () => {
         console.log(projectDetails)
     }
@@ -82,20 +95,12 @@ export default function ProjectDetails() {
                     <div className='main-tasks'>
                         <h3>Tasks</h3>
                         <div className="project-details__tasks">
-                            <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                            />
-                            <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                            />
+                            {tasks.map((item) => (
+                            <TaskInfo title={item.name}
+                                commentsCount="3" /> ))
+                            }
                             <div className='button-block'>
-                                <Button text='Add'/>
+                                <Button text='Add' onClick={openModalTask}/>
                             </div>
                         </div>
                     </div>
@@ -106,6 +111,9 @@ export default function ProjectDetails() {
             </div>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
                 <AddUser/>
+            </Modal>
+            <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
+                <TaskCreation addTask={addTask} closeModal={closeModalTask}/>
             </Modal>
         </>
     );

@@ -7,7 +7,7 @@ import Select from "../Controls/Select/Select";
 import Button from "../Button/Button";
 import {useState} from "react";
 
-export default function TaskCreation() {
+export default function TaskCreation({addTask, closeModal}) {
     const [task, setTask] = useState({
         name:"",
         description:"",
@@ -34,7 +34,9 @@ export default function TaskCreation() {
 
     const saveTask = (e) => {
         e.preventDefault();
+        addTask(task);
         console.log("Task ", task)
+        closeModal();
     }
 
     const users = ['Emily Smith'];
