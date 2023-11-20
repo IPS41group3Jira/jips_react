@@ -6,7 +6,13 @@ import Input from "../Controls/Input/Input";
 import Textarea from "../Controls/Input/Textarea";
 import Modal from "../Modal/Modal";
 import {useState} from "react";
-import {AddUser} from "../AddUser/AddUser";
+import { AddUser } from "../AddUser/AddUser";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+ 
+// CSS Modules, react-datepicker-cssmodules.css// 
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 export default function ProjectDetails() {
     const [projectDetails, setProjectDetails] = useState({
@@ -23,6 +29,8 @@ export default function ProjectDetails() {
             [fieldName]: value
         }))
     })
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -45,21 +53,14 @@ export default function ProjectDetails() {
                         ></Input>
                     </div>
                     <div className="project-dates">
-                        <label>Start</label>
                         <div>
-                            <Input placeholder="Start"
-                                   value={projectDetails.start_date}
-                                   onChange={(e) => handleInputChange("start_date", e.target.value)}
-                            />
+                            <label>Start</label>
+                            <DatePicker selected={ startDate } className="input" placeholderText="Start" onChange={(date) => setStartDate(date)}/>
                         </div>
-                        <label>End</label>
                         <div>
-                            <Input placeholder="End"
-                                   value={projectDetails.end_date}
-                                   onChange={(e) => handleInputChange("end_date", e.target.value)}
-                            />
+                            <label>End</label>
+                            <DatePicker selected={ endDate } className="input" placeholderText="End" onChange={(date) => setEndDate(date)}/>
                         </div>
-
                     </div>
                 </div>
                 <Textarea className=' project-info' rows="5" placeholder="Description" value={projectDetails.description}

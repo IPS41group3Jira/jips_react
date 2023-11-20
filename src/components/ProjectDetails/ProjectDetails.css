@@ -7,10 +7,15 @@
     display: flex;
     justify-content: space-between;
 }
-.project_dates {
+.project-dates {
+    display: flex;
+    gap: .5em;
+}
+.project-dates > div {
     display: flex;
     flex-direction: column;
 }
+
 .project-name {
     font-size: 23px;
     font-weight: 700;
