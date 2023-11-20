@@ -21,6 +21,11 @@ export default function useAuth () {
     const getUser = (id = '') => {
         if (!id) {
             const token = localStorage.getItem('accessToken');
+            if (!token) {
+                navigate('/login');
+                return;
+            }
+            
             const decode = jwtDecode(token);
             id = decode?.userId;
         }
@@ -41,5 +46,10 @@ export default function useAuth () {
         }).catch(console.log);
     }
 
-    return { signIn, signUp, User, getUser, getListProjects};
+    const logOut = () => {
+        localStorage.clear()
+        navigate('/login');
+    }
+
+    return { signIn, signUp, User, getUser, getListProjects, logOut};
 }
