@@ -5,22 +5,15 @@ import Textarea from "../Controls/Input/Textarea";
 import Option from "../Controls/Select/Option";
 import Select from "../Controls/Select/Select";
 import Button from "../Button/Button";
-import {useState} from "react";
-import DragDropFiles from "./DragDropFiles";
-import Comments from "./Comments/Comments";
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+ 
+// CSS Modules, react-datepicker-cssmodules.css// 
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-export default function TaskCreation({addTask, closeModal}) {
-    const comments = [{
-        commentId: 1,
-        creationDate: new Date(),
-        text: "All is well",
-        creatorName: "Den",
-    }, {
-        commentId: 1,
-        creationDate: new Date(),
-        text: "All is bad",
-        creatorName: "Den",
-    }]
+export default function TaskCreation({ addTask, closeModal }) {
+    const [status, setStatus] = useState();
     const [task, setTask] = useState({
         name: "",
         description: "",
@@ -32,6 +25,14 @@ export default function TaskCreation({addTask, closeModal}) {
         status: "",
 
     })
+
+    const [creationDate, setCreationDate] = useState(new Date());
+    const [dueDate, setDueDate] = useState(new Date());
+
+    useEffect(() => {
+        setTask({ ...task, creationDate, dueDate, status });
+    }, [dueDate, creationDate, status]);
+
     const handleInputChange = ((fieldName, value) => {
         setTask(prevTask => ({
             ...prevTask,
@@ -39,10 +40,7 @@ export default function TaskCreation({addTask, closeModal}) {
         }))
     })
     const onChangeSelect = (value, label) => {
-        setTask(prevTask => ({
-            ...prevTask,
-            status: value
-        }))
+        setStatus(value);
     }
 
     const saveTask = (e) => {
@@ -82,10 +80,13 @@ export default function TaskCreation({addTask, closeModal}) {
                         </div>
                     </Form.Group>
                     <Form.Group className="task-group">
-                        <Select value="New" labelBefore="State:" onChange={onChangeSelect}>
-                            <Option value="new">New</Option>
-                            <Option value="in_press">In progress</Option>
-                            <Option value="closed">Closed</Option>
+                        <Select labelBefore="State:" onChange={onChangeSelect}>
+                            <Option value ="blocked">Blocked</Option>
+                            <Option value ="opened" selected>Opened</Option>
+                            <Option value ="to_do">To do</Option>
+                            <Option value ="in_progress">In progress</Option>
+                            <Option value ="in_testing">In testing</Option>
+                            <Option value ="done">Done</Option>
                         </Select>
                         <DragDropFiles/>
                         <div className="list-users">

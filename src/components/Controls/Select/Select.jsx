@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
 
 import './Select.css';
 import './../Controls.css';
 
-function Select({ children, labelBefore, value, onChange, className, ...attrs }) {
+function Select({ children, labelBefore, onChange, className, ...attrs }) {
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [val, setVal] = useState(value);
+	const [val, setVal] = useState();
 
 	const toggleSelect = () => {
 		setIsOpen(!isOpen);
@@ -22,6 +22,14 @@ function Select({ children, labelBefore, value, onChange, className, ...attrs })
 		setIsOpen(false);
 	};
 
+	useEffect(() => {
+		children.map(child => {
+			if (child.props.selected) {
+				handleOptionClick(child.props.value, child.props.children);
+			}
+		})
+	}, [])
+
 	return (
 		<div className={`select ${className}  ${isOpen ? 'open' : ''}`} { ...attrs }>
 			<div className="select__header" onClick={toggleSelect}>
@@ -33,7 +41,7 @@ function Select({ children, labelBefore, value, onChange, className, ...attrs })
 				isOpen && (
 					<ul className="select__options">
 						{
-							React.Children.map(children, (child) =>
+							React.Children.map(children, (child) => 
 								React.cloneElement(child, {
 									onClick: () => handleOptionClick(child.props.value, child.props.children),
 								})

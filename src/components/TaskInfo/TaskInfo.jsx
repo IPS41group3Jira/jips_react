@@ -7,7 +7,8 @@ import Option from '../Controls/Select/Option';
 
 export default function TaskInfo({title, status, commentsCount, createdTime, showStatus}) {
     const onChangeSelect = (value, label) => {
-        alert(value);
+        // alert(value);
+        console.log(value)
     }
 
     return (
@@ -16,10 +17,13 @@ export default function TaskInfo({title, status, commentsCount, createdTime, sho
                 <Col sm={6} className="task_title"><span>{title}</span></Col>
                 {showStatus &&
                     <Col sm={6} className="task_state">
-                        <Select value="New" labelBefore="State:" onChange={onChangeSelect}>
-                            <Option value="new">New</Option>
-                            <Option value="in_press">In progress</Option>
-                            <Option value="closed">Closed</Option>
+                        <Select labelBefore="State:" onChange={onChangeSelect}>
+                            <Option value ="blocked">Blocked</Option>
+                            <Option value ="opened" selected>Opened</Option>
+                            <Option value ="to_do">To do</Option>
+                            <Option value ="in_progress">In progress</Option>
+                            <Option value ="in_testing">In testing</Option>
+                            <Option value ="done">Done</Option>
                         </Select>
                     </Col>
                 }

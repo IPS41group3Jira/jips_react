@@ -5,8 +5,11 @@ import UserCard from "../UserCard/UserCard";
 import Input from "../Controls/Input/Input";
 import Textarea from "../Controls/Input/Textarea";
 import Modal from "../Modal/Modal";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { AddUser } from "../AddUser/AddUser";
+
+import { createProject, addUserToProject } from "../../Hooks/Project";
+import { createIssue } from "../../Hooks/Issue";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -19,8 +22,8 @@ export default function ProjectDetails() {
     const [projectDetails, setProjectDetails] = useState({
         name: "",
         description: "",
-        start_date: "",
-        end_date: ""
+        startDate: "",
+        endDate: ""
     })
     const [tasks, setTasks] = useState([]);
     const [userList, setUserList] = useState([]);
@@ -29,6 +32,10 @@ export default function ProjectDetails() {
     const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+
+    useEffect(() => {
+        setProjectDetails({ ...projectDetails, startDate, endDate });
+    }, [startDate, endDate]);
 
     const handleInputChange = ((fieldName, value) => {
         setProjectDetails(prevProject => ({
@@ -63,6 +70,16 @@ export default function ProjectDetails() {
     const saveProject = () => {
         console.log(tasks);
         console.log(userList);
+        const { name, description, start_date, end_date } = projectDetails;
+
+        createProject(name, description, start_date, end_date).then((res) => {
+            const project = res.data;
+            Promise.all(userList.map((user) => addUserToProject(project.id, user.id, user.role))).then(() => {
+                tasks.map((task) => {
+                    createIssue(task.name, task.description, project.id, task.dueDate, task.priority, task.assigneeId ?? null, task.status);
+                });
+            });
+        })
     }
     return (
         <>
@@ -96,12 +113,9 @@ export default function ProjectDetails() {
                         <h3>Users</h3>
                         <div className='project-details__tasks'>
                             {
-                                userList.map((user, index) => {
-                                    const name = `${user.firstName} ${user.lastName}`;
-                                    return (
-                                        <UserCard key={index} name={name} role='role' />
-                                    );
-                                })
+                                userList.map((user, index) => (
+                                    <UserCard key={index} name={`${user.firstName} ${user.lastName}`} role={ user.role } />
+                                ))
                             }
                         </div>
                         <div className='button-block'>

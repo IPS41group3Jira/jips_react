@@ -6,21 +6,13 @@ import {useContext, useState} from "react";
 import Button from "../Button/Button";
 import { FiSearch } from "react-icons/fi";
 import { UserContext } from '../../App';
+import rolesMap from "../../Hooks/Role";
 
 
 export const AddUser = ({ tasks, addUser, setTasks, closeModal }) => {
     const { getUserByEmail } = useContext(UserContext);
     const [User, setUser] = useState(null);
-    const [newUser, setNewUser] = useState({
-        id: "",
-        role: "",
-        tasks : [],
-    })
-
-    const [users, setProject] = useState([
-        {id: 1, email: "poli@gmail.com"},
-        {id: 2, email: "bilk@gmail.com"},
-    ]);
+    const [Role, setRole] = useState(1);
 
     const handlerTaskSelection = (task) => {
         task.assigneeId = task.assigneeId ? null : User.id;
@@ -42,9 +34,13 @@ export const AddUser = ({ tasks, addUser, setTasks, closeModal }) => {
         setUser({ ...User, role });
     }
 
-    const handleUserEmailInput = ((email) => {
-        getUserByEmail(email).then((res) => setUser({ ...res.data, role: null }));
-    });
+    const handleUserEmailInput = (e) => {
+        const email = e.target.value;
+        if (email)
+            getUserByEmail(email).then((res) => setUser({ ...res.data, role: 1 }));
+        else
+            setUser(null);
+    };
 
     return (
         <>
@@ -54,18 +50,16 @@ export const AddUser = ({ tasks, addUser, setTasks, closeModal }) => {
                     <Form.Group>
                         <Form.Label>User email</Form.Label>
                         <div className="add_user_form-input-group">
-                            <Input placeHolder="User email" className="add_user_input"
-                                   onChange={(e) => handleUserEmailInput(e.target.value)}
-                            />
+                            <Input placeHolder="User email" className="add_user_input" value="" onBlur={handleUserEmailInput} />
                             <FiSearch className="icon-search"/>
                         </div>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Role</Form.Label>
                         <Form.Select className="select__role" aria-label="Role" onChange={onChangeSelectRole}>
-                            <option value="1">Participant</option>
-                            <option value="2">Manager</option>
-                            <option value="3">Owner</option>
+                            {Object.entries(rolesMap).map(([id, name]) => (
+                                <option value={id} {...( Role == id ? 'selected' : '')}>{ name }</option>
+                            ))}
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className="mt-3">
