@@ -23,6 +23,8 @@ export default function ProjectDetails() {
         end_date: ""
     })
     const [tasks, setTasks] = useState([]);
+    const [userList, setUserList] = useState([]);
+    const [userTask, setUserTask] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
@@ -51,6 +53,12 @@ export default function ProjectDetails() {
     const addTask = (newTask) => {
         setTasks((prevTasks) => [...prevTasks, newTask])
         console.log(tasks)
+    }
+    const addUserTask = (newUser) => {
+        setUserTask((prevUser) => [...prevUser, newUser])
+    }
+    const addUserList = (newUser) => {
+        setUserList((prevList) => [...prevList, newUser])
     }
     const saveProject = () => {
         console.log(projectDetails)
@@ -110,7 +118,7 @@ export default function ProjectDetails() {
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <AddUser/>
+                <AddUser tasks={tasks} setUserList={setUserList} setUserTask={setUserTask} userTask={userTask}/>
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
                 <TaskCreation addTask={addTask} closeModal={closeModalTask}/>
