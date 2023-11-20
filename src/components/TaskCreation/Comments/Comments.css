@@ -1,0 +1,28 @@
+.add-comment-input {
+    width: 100%;
+}
+
+.comment-block {
+    --input-border-radius: 4px;
+    --input-border-colour: #C0C0C0;
+    --input-background-color: #F6F5F5;
+
+    padding: .40em .5em;
+    border-radius: var(--input-border-radius);
+    border: 2px solid var(--input-border-colour);
+    background-color: var(--input-background-color);
+    user-select: none;
+    outline: none;
+}
+
+.user-name, .comments-title {
+    font-weight: 600;
+}
+
+.comments-wrapper {
+    width: 100%;
+    max-height: 100px;
+    overflow: auto;
+    direction: ltr;
+}
+

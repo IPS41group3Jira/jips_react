@@ -7,11 +7,23 @@ import Select from "../Controls/Select/Select";
 import Button from "../Button/Button";
 import {useState} from "react";
 import DragDropFiles from "./DragDropFiles";
+import Comments from "./Comments/Comments";
 
 export default function TaskCreation({addTask, closeModal}) {
+    const comments = [{
+        commentId: 1,
+        creationDate: new Date(),
+        text: "All is well",
+        creatorName: "Den",
+    }, {
+        commentId: 1,
+        creationDate: new Date(),
+        text: "All is bad",
+        creatorName: "Den",
+    }]
     const [task, setTask] = useState({
-        name:"",
-        description:"",
+        name: "",
+        description: "",
         projectId: 3,
         creationDate: new Date(),
         dueDate: null,
@@ -50,7 +62,7 @@ export default function TaskCreation({addTask, closeModal}) {
         <>
             <div>
                 <Form className="task-creation-form" onSubmit={saveTask}>
-                    <Form.Group >
+                    <Form.Group>
                         <Form.Label className="label">Task name</Form.Label>
                         <div>
                             <Input placeHolder="Task name"
@@ -115,8 +127,9 @@ export default function TaskCreation({addTask, closeModal}) {
 
                         </div>
                     </Form.Group>
+                    <Comments comments={comments}/>
                     <div className="btn">
-                        <Button text="Save" type="submit" />
+                        <Button text="Save" type="submit"/>
                     </div>
                 </Form>
             </div>
