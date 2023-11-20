@@ -6,8 +6,9 @@ export default function Comments({comments}) {
 
     return (
         <>
-            <div className="comments-wrapper">
-                <p className="comments-title">Comments (only for task details)</p>
+            <div className="comments">
+                <span className="comments-title">Comments (only for task details)</span>
+                <div className="comments-wrapper">
                 {
                     comments.map(comment => {
                         return (
@@ -15,6 +16,7 @@ export default function Comments({comments}) {
                         )
                     })
                 }
+                </div>
             </div>
             <Input placeholder="Add your comments" className="add-comment-input"></Input>
         </>
