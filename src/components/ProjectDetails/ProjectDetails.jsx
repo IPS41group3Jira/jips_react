@@ -47,6 +47,7 @@ export default function ProjectDetails() {
             <div className='project-details-block'>
                 <div className="project-header">
                     <div>
+                        <label>Project Name</label>
                         <Input className=' project-name' placeholder="Project Name"
                                value={projectDetails.name}
                                onChange={(e) => handleInputChange("name", e.target.value)}
@@ -63,10 +64,11 @@ export default function ProjectDetails() {
                         </div>
                     </div>
                 </div>
-                <Textarea className=' project-info' rows="5" placeholder="Description" value={projectDetails.description}
-                          onChange={(e) => handleInputChange("description", e.target.value)}
-                >
-                </Textarea>
+                <div>
+                    <label>Description</label>
+                    <Textarea className=' project-info' rows="5" placeholder="Description" value={projectDetails.description}
+                            onChange={(e) => handleInputChange("description", e.target.value)}></Textarea>
+                </div>
                 <div className='project-details-block__main'>
                     <div>
                         <h3>Users</h3>

@@ -2,11 +2,20 @@
     width: 70em;
     background-color: var(--modal-background-color);
     padding: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }
 .project-header {
     display: flex;
     justify-content: space-between;
 }
+
+.project-header > div:first-child {
+    display: flex;
+    flex-direction: column;
+}
+
 .project-dates {
     display: flex;
     gap: .5em;
@@ -14,11 +23,6 @@
 .project-dates > div {
     display: flex;
     flex-direction: column;
-}
-
-.project-name {
-    font-size: 23px;
-    font-weight: 700;
 }
 
 
