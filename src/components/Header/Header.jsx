@@ -16,7 +16,6 @@ export default function Header() {
 					<Nav.Link href="/users">Users</Nav.Link>
 				</Navbar>
 				<div className="header__controls">
-					<a href="/login" className='header_control'><GoGear className="icon_gear" /></a>
 					<a href="/login" className='header_control'><VscAccount className="icon_account"/></a>
 				</div>
 				{/* Brand */}

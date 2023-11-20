@@ -10,6 +10,7 @@ export default function useAuth () {
     
     const signIn = (email, password) => {
         return Axios.post('/user/login', { email, password }).then(resp => {
+            console.log(resp.data)
             localStorage.setItem('accessToken', resp.data);
             
             getUser();

@@ -45,7 +45,7 @@ export default function Login() {
                     <label>Log in</label>
                     <Form className="authorization-form" name="login-form" onSubmit={handleSubmit(onSubmit, onError)}>
                         <Form.Group>
-                            <input type="text" placeholder="Username" { ...register('email', { required : true }) } className="authorization-input"/>
+                            <input type="text" placeholder="Email" { ...register('email', { required : true }) } className="authorization-input"/>
                         </Form.Group>
                         <Form.Group className="password-group">
                                 <input type={showPassword ? 'text' : "password"} placeholder="Password" { ...register('password', { required : true }) } className="authorization-input"/>

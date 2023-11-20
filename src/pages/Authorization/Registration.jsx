@@ -47,15 +47,15 @@ export default function Registration() {
                     <label>Create an account</label>
                     <Form className="authorization-form" name="register-form" onSubmit={handleSubmit(onSubmit, onError)}>
                         <Form.Group >
-                            <input type="text" placeholder="Username" className="authorization-input" { ...register('email', { required : true }) }/>
+                            <input type="text" placeholder="Email" className="authorization-input" { ...register('email', { required : true }) }/>
                         </Form.Group>
 
                         <Form.Group >
-                            <input type="text" placeholder="First name" className="authorization-input" { ...register('lastName', { required : true }) }/>
+                            <input type="text" placeholder="First name" className="authorization-input" { ...register('firstName', { required : true }) }/>
                         </Form.Group>
 
                         <Form.Group >
-                            <input type="text" placeholder="Last name" className="authorization-input" { ...register('firstName', { required : true }) }/>
+                            <input type="text" placeholder="Last name" className="authorization-input" { ...register('lastName', { required : true }) }/>
                         </Form.Group>
 
                         <Form.Group className="password-group">

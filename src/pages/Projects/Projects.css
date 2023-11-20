@@ -5,3 +5,7 @@
 .projects-list > div {
     margin-bottom: 1em;
 }
+.btn_project {
+    display: flex;
+    justify-content: center;
+}
