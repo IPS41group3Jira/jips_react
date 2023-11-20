@@ -1,0 +1,29 @@
+.profile-form {
+    background-color: #fff;
+    width: 30em;
+    padding: 0em 2em 1em;
+}
+.profile-title {
+    width: 100%;
+    text-align: center;
+    font-size: 2em;
+}
+.profile-group {
+    display: flex;
+    align-items: center;
+    padding: .2em 0;
+}
+.profile-btn {
+    display: flex;
+    justify-content: center;
+}
+.profile-group > label{
+    width: 40%;
+    font-size: 1.2em;
+}
+.profile-group > div {
+    width: 100%;
+}
+.profile-input {
+    width: 100%;
+}

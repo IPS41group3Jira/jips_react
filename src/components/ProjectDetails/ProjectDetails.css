@@ -3,24 +3,23 @@
     background-color: var(--modal-background-color);
     padding: 2em;
 }
-
-.project-text {
-    border: 1px solid #535353;
-    padding: 5px;
-    border-radius: 4px;
+.project-header {
+    display: flex;
+    justify-content: space-between;
 }
-
+.project_dates {
+    display: flex;
+    flex-direction: column;
+}
 .project-name {
-    width: 40%;
-    font-size: 30px;
+    font-size: 23px;
     font-weight: 700;
-    color: #535353;
 }
+
 
 .project-info {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #676767;
+    width: 100%;
+    margin-top: .5em;
 }
 
 .project-details-block__main {
@@ -42,4 +41,8 @@
 }
 .button-block {
     text-align: center;
+}
+.project-save {
+    display: flex;
+    justify-content: center;
 }
