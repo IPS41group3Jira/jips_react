@@ -1,6 +1,7 @@
 import Axios from '../Axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"
 
 export default function useAuth () { 
     const navigate = useNavigate();
@@ -12,12 +13,18 @@ export default function useAuth () {
         return Axios.post('/user/login', { email, password }).then(resp => {
             console.log(resp.data)
             localStorage.setItem('accessToken', resp.data);
-            
-            getUser();
+            const decode = jwtDecode(resp.data);
+            getUser(decode.userId);
         }).catch(console.log);
     };
 
     const getUser = (id = '') => {
+        if (!id) {
+            const token = localStorage.getItem('accessToken');
+            const decode = jwtDecode(token);
+            id = decode?.userId;
+        }
+
         return Axios.get(`/user/${id}`).then(user => {
             setUser(user.data);
         }).catch(() => {
