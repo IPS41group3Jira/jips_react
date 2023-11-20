@@ -27,8 +27,8 @@
 
 
 .project-info {
-    width: 100%;
     margin-top: .5em;
+    width: 100%;
 }
 
 .project-details-block__main {
@@ -41,13 +41,17 @@
     display: flex;
     flex-direction: column;
     gap: 1em;
+    max-height: 15em;
+    overflow-x: hidden;
+    width: 30em;
+    margin-bottom: 1em;
 }
 
 .main-tasks {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: 40%;
+    /*justify-content: center;*/
+    /*width: 40%;*/
 }
 .button-block {
     text-align: center;

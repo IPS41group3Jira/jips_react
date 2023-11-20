@@ -97,13 +97,15 @@ export default function ProjectDetails() {
                         <div className='project-details__tasks'>
                             {
                                 userList.map((user, index) => {
-                                    // const name = `${user.firstName} ${user.lastName}`;
-                                    <UserCard key={ index }  name="123" role='role'/>
+                                    const name = `${user.firstName} ${user.lastName}`;
+                                    return (
+                                        <UserCard key={index} name={name} role='role' />
+                                    );
                                 })
                             }
-                            <div className='button-block'>
-                                <Button text='Add' onClick={openModalUser}/>
-                            </div>
+                        </div>
+                        <div className='button-block'>
+                            <Button text='Add' onClick={openModalUser}/>
                         </div>
                     </div>
                     <div className='main-tasks'>
@@ -113,9 +115,9 @@ export default function ProjectDetails() {
                                 <TaskInfo key={ index } title={item.name}
                                 commentsCount="3" /> ))
                             }
-                            <div className='button-block'>
-                                <Button text='Add' onClick={openModalTask}/>
-                            </div>
+                        </div>
+                        <div className='button-block'>
+                            <Button text='Add' onClick={openModalTask}/>
                         </div>
                     </div>
                 </div>
