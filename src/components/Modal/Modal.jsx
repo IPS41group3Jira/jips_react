@@ -6,7 +6,7 @@ export default function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null;
 
     return (
-        <div class="ui-modal-wrapper" >
+        <div className="ui-modal-wrapper" >
             <div className='ui-modal'>
                 <div className='ui-modal__header'>
                     <button onClick={onClose}><AiOutlineClose/></button>

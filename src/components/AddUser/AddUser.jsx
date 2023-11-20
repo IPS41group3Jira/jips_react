@@ -2,44 +2,50 @@ import './AddUser.css';
 import {Form} from "react-bootstrap";
 import Input from "../Controls/Input/Input";
 import TaskInfo from "../TaskInfo/TaskInfo";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import Button from "../Button/Button";
-import {FiSearch} from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
+import { UserContext } from '../../App';
 
-export const AddUser = () => {
+
+export const AddUser = ({ tasks, addUser, setTasks, closeModal }) => {
+    const { getUserByEmail } = useContext(UserContext);
+    const [User, setUser] = useState(null);
     const [newUser, setNewUser] = useState({
         id: "",
         role: "",
+        tasks : [],
     })
-    const [email, setEmail] = useState();
 
     const [users, setProject] = useState([
-            {id: 1, email: "poli@gmail.com"},
-            {id: 2, email: "bilk@gmail.com"},
+        {id: 1, email: "poli@gmail.com"},
+        {id: 2, email: "bilk@gmail.com"},
     ]);
-    const [tasks, setTask] = useState([
-        {id: 1, title: "New task", count: 3},
-        {id: 2, title: "New task", count: 3},
-        {id: 3, title: "New task", count: 3},
-        {id: 3, title: "New task", count: 3},
-    ]);
+
+    const handlerTaskSelection = (task) => {
+        task.assigneeId = task.assigneeId ? null : User.id;
+        console.log(task)
+    }
     const saveUser = (e) => {
         e.preventDefault();
-        const selectedUser = users.find(user => user.email === email)
-        if (selectedUser){
-            newUser.id = selectedUser.id
-        }
-        console.log(newUser)
+
+        addUser(User);
+        setTasks(tasks);
+
+        console.log(User);
+        console.log(tasks);
+
+        closeModal();
     }
     const onChangeSelectRole = (e) => {
-        setNewUser(prevUser => ({
-            ...prevUser,
-            role: e.target.value
-        }));
+        const role = e.target.value;
+        setUser({ ...User, role });
     }
-    const handleInputChange = ((value) => {
-        setEmail(value)
-    })
+
+    const handleUserEmailInput = ((email) => {
+        getUserByEmail(email).then((res) => setUser({ ...res.data, role: null }));
+    });
+
     return (
         <>
             <div>
@@ -49,16 +55,15 @@ export const AddUser = () => {
                         <Form.Label>User email</Form.Label>
                         <div className="add_user_form-input-group">
                             <Input placeHolder="User email" className="add_user_input"
-                                   value={email}
-                                   onChange={(e) => handleInputChange(e.target.value)}
+                                   onChange={(e) => handleUserEmailInput(e.target.value)}
                             />
-                            <FiSearch className="icon-search" />
+                            <FiSearch className="icon-search"/>
                         </div>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Role</Form.Label>
                         <Form.Select className="select__role" aria-label="Role" onChange={onChangeSelectRole}>
-                            <option value="1" >Participant</option>
+                            <option value="1">Participant</option>
                             <option value="2">Manager</option>
                             <option value="3">Owner</option>
                         </Form.Select>
@@ -66,19 +71,22 @@ export const AddUser = () => {
                     <Form.Group className="mt-3">
                         <label>Assign tasks</label>
                         <div className="tasks-box">
-                            {tasks.map((item) => (
-                                <div className="box_item">
-                                    <Form.Check type="checkbox" className="item_checkbox" id={item.id}></Form.Check>
+                            {tasks.filter((task) => !task.assigneeId).map((task, index) => (
+                                <div className="box_item" key = {index} >
+                                    <Form.Check type="checkbox" className="item_checkbox" onChange={(e) => handlerTaskSelection(task)}
+                                                // checked={indexList.includes(index)}
+                                    ></Form.Check>
                                     <TaskInfo
-                                        title={item.title}
-                                        commentsCount={item.count}
+                                        title={task.name}
+                                        commentsCount={index}
                                         createdTime="11 hours"/>
                                 </div>
+
                             ))}
                         </div>
                     </Form.Group>
                     <Form.Group className="add_user_form__btn">
-                        <Button text="Save" type="submit"/>
+                        <Button text="Save" type="submit" />
                     </Form.Group>
                 </Form>
             </div>
