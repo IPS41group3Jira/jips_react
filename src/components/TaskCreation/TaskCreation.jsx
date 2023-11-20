@@ -14,7 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-export default function TaskCreation({ addTask, closeModal }) {
+export default function TaskCreation({ addTask, closeModal, newProject=true }) {
     const [status, setStatus] = useState();
     const [task, setTask] = useState({
         name: "",
@@ -141,7 +141,7 @@ export default function TaskCreation({ addTask, closeModal }) {
 
                         </div>
                     </Form.Group>
-                    <Comments comments={comments}/>
+                    {!newProject && <Comments comments={comments} />}
                     <div className="btn">
                         <Button text="Save" type="submit"/>
                     </div>

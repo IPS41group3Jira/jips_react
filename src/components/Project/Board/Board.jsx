@@ -115,7 +115,7 @@ export default function Board() {
             </div>
 
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <TaskCreation />
+                <TaskCreation newProject={ false } />
             </Modal>
         </>
     );
