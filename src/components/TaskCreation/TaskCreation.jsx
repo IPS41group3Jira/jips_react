@@ -5,7 +5,12 @@ import Textarea from "../Controls/Input/Textarea";
 import Option from "../Controls/Select/Option";
 import Select from "../Controls/Select/Select";
 import Button from "../Button/Button";
-import {useState} from "react";
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+ 
+// CSS Modules, react-datepicker-cssmodules.css// 
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 export default function TaskCreation({addTask, closeModal}) {
     const [task, setTask] = useState({
@@ -19,6 +24,10 @@ export default function TaskCreation({addTask, closeModal}) {
         status: "",
 
     })
+
+    const [creationDate, setCreationDate] = useState(new Date());
+    const [dueDate, setDueDate] = useState(new Date());
+
     const handleInputChange = ((fieldName, value) => {
         setTask(prevTask => ({
             ...prevTask,
@@ -44,6 +53,8 @@ export default function TaskCreation({addTask, closeModal}) {
     function ListItem({title}) {
         return <li>{title}</li>
     }
+
+
 
     return (
         <>
@@ -86,19 +97,13 @@ export default function TaskCreation({addTask, closeModal}) {
                             <Form.Group>
                                 <Form.Label className="label">Requires time</Form.Label>
                                 <div>
-                                    <Input placeHolder="Requires time"
-                                           value={task.creationDate}
-                                           onChange={(e) => handleInputChange("creationDate", e.target.value)}
-                                    ></Input>
+                                    <DatePicker selected={ creationDate } className="input" placeholderText="Start" onChange={(date) => setCreationDate(date)}/>
                                 </div>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label className="label">Remaining time</Form.Label>
                                 <div>
-                                    <Input placeHolder="Remaining time"
-                                           value={task.dueDate}
-                                           onChange={(e) => handleInputChange("dueDate", e.target.value)}
-                                    ></Input>
+                                    <DatePicker selected={ dueDate } className="input" placeholderText="Start" onChange={(date) => setDueDate(date)}/>
                                 </div>
                             </Form.Group>
                             <Form.Group>

@@ -25,7 +25,7 @@ export default function ProjectDetails() {
     const [tasks, setTasks] = useState([]);
     const [userList, setUserList] = useState([]);
     const [userTask, setUserTask] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalUserOpen] = useState(false);
     const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -36,32 +36,33 @@ export default function ProjectDetails() {
             [fieldName]: value
         }))
     })
-    const openModal = () => {
-        setIsModalOpen(true);
+    const openModalUser = () => {
+        setIsModalUserOpen(true);
     };
 
     const openModalTask = () => {
         setIsModalTaskOpen(true);
     };
-    const closeModal = () => {
-        setIsModalOpen(false);
+    const closeModalUser = () => {
+        setIsModalUserOpen(false);
     };
     const closeModalTask = () => {
         setIsModalTaskOpen(false);
     };
 
     const addTask = (newTask) => {
-        setTasks((prevTasks) => [...prevTasks, newTask])
+        setTasks([...tasks, newTask])
         console.log(tasks)
     }
-    const addUserTask = (newUser) => {
-        setUserTask((prevUser) => [...prevUser, newUser])
-    }
+
     const addUserList = (newUser) => {
-        setUserList((prevList) => [...prevList, newUser])
+        setUserList([...userList, newUser])
+        console.log('UserList', userList)
     }
+
     const saveProject = () => {
-        console.log(projectDetails)
+        console.log(tasks);
+        console.log(userList);
     }
     return (
         <>
@@ -94,17 +95,22 @@ export default function ProjectDetails() {
                     <div>
                         <h3>Users</h3>
                         <div className='project-details__tasks'>
-                            <UserCard name='Emily Smith' role='role'/>
+                            {
+                                userList.map((user, index) => {
+                                    // const name = `${user.firstName} ${user.lastName}`;
+                                    <UserCard key={ index }  name="123" role='role'/>
+                                })
+                            }
                             <div className='button-block'>
-                                <Button text='Add' onClick={openModal}/>
+                                <Button text='Add' onClick={openModalUser}/>
                             </div>
                         </div>
                     </div>
                     <div className='main-tasks'>
                         <h3>Tasks</h3>
                         <div className="project-details__tasks">
-                            {tasks.map((item) => (
-                            <TaskInfo title={item.name}
+                            {tasks.map((item, index) => (
+                                <TaskInfo key={ index } title={item.name}
                                 commentsCount="3" /> ))
                             }
                             <div className='button-block'>
@@ -117,8 +123,8 @@ export default function ProjectDetails() {
                     <Button text={"Save"} onClick={saveProject}/>
                 </div>
             </div>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <AddUser tasks={tasks} setUserList={setUserList} setUserTask={setUserTask} userTask={userTask}/>
+            <Modal isOpen={isModalOpen} onClose={closeModalUser}>
+                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} userTask={userTask} closeModal={ closeModalUser } />
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
                 <TaskCreation addTask={addTask} closeModal={closeModalTask}/>

@@ -2,58 +2,50 @@ import './AddUser.css';
 import {Form} from "react-bootstrap";
 import Input from "../Controls/Input/Input";
 import TaskInfo from "../TaskInfo/TaskInfo";
-import {useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import Button from "../Button/Button";
-import {FiSearch} from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
+import { UserContext } from '../../App';
 
-export const AddUser = ({tasks, userTask, setUserList, setUserTask}) => {
+
+export const AddUser = ({ tasks, addUser, setTasks, closeModal }) => {
+    const { getUserByEmail } = useContext(UserContext);
+    const [User, setUser] = useState(null);
     const [newUser, setNewUser] = useState({
         id: "",
         role: "",
         tasks : [],
     })
-    const [indexList, setIndexList] = useState([])
-    const [email, setEmail] = useState();
-    const [freeTask, setFreTask] = useState( tasks.filter(task => task.assigneeId === "" || task.assigneeId === null))
 
     const [users, setProject] = useState([
         {id: 1, email: "poli@gmail.com"},
         {id: 2, email: "bilk@gmail.com"},
     ]);
 
-    const handlerTaskSelection = (index) => {
-        const isIndexSelected = indexList.includes(index);
-        if (isIndexSelected) {
-            setIndexList((prevList) => prevList.filter((selectedIndex) => selectedIndex !== index));
-        }else {
-            setIndexList((prevList) => [...prevList, index])
-        }
-        console.log(indexList)
+    const handlerTaskSelection = (task) => {
+        task.assigneeId = task.assigneeId ? null : User.id;
+        console.log(task)
     }
     const saveUser = (e) => {
         e.preventDefault();
-        const selectedUser = users.find(user => user.email === email)
-        if (selectedUser) {
-            newUser.id = selectedUser.id
-        }
-        for (let i = 0; i >= indexList.length; i++) {
-            setNewUser(prevUser => ({
-                ...prevUser,
-                tasks: [...prevUser.tasks, freeTask[indexList[i]]]
-            }))
-        }
-        console.log(newUser)
-        console.log("index ", indexList)
+
+        addUser(User);
+        setTasks(tasks);
+
+        console.log(User);
+        console.log(tasks);
+
+        closeModal();
     }
     const onChangeSelectRole = (e) => {
-        setNewUser(prevUser => ({
-            ...prevUser,
-            role: e.target.value
-        }));
+        const role = e.target.value;
+        setUser({ ...User, role });
     }
-    const handleInputChange = ((value) => {
-        setEmail(value)
-    })
+
+    const handleUserEmailInput = ((email) => {
+        getUserByEmail(email).then((res) => setUser({ ...res.data, role: null }));
+    });
+
     return (
         <>
             <div>
@@ -63,8 +55,7 @@ export const AddUser = ({tasks, userTask, setUserList, setUserTask}) => {
                         <Form.Label>User email</Form.Label>
                         <div className="add_user_form-input-group">
                             <Input placeHolder="User email" className="add_user_input"
-                                   value={email}
-                                   onChange={(e) => handleInputChange(e.target.value)}
+                                   onChange={(e) => handleUserEmailInput(e.target.value)}
                             />
                             <FiSearch className="icon-search"/>
                         </div>
@@ -80,15 +71,13 @@ export const AddUser = ({tasks, userTask, setUserList, setUserTask}) => {
                     <Form.Group className="mt-3">
                         <label>Assign tasks</label>
                         <div className="tasks-box">
-                            {freeTask.map((item, index) => (
-                                <div className="box_item">
-                                    <Form.Check type="checkbox" className="item_checkbox"
-                                                id={index}
-                                                onChange={(e) => handlerTaskSelection(index)}
+                            {tasks.filter((task) => !task.assigneeId).map((task, index) => (
+                                <div className="box_item" key = {index} >
+                                    <Form.Check type="checkbox" className="item_checkbox" onChange={(e) => handlerTaskSelection(task)}
                                                 // checked={indexList.includes(index)}
                                     ></Form.Check>
                                     <TaskInfo
-                                        title={item.name}
+                                        title={task.name}
                                         commentsCount={index}
                                         createdTime="11 hours"/>
                                 </div>

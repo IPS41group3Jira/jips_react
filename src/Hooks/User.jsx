@@ -36,6 +36,11 @@ export default function useAuth () {
             navigate('/login');
         });
     }
+
+    const getUserByEmail = (email) => {
+        return Axios.get(`/user/email/${email}`);
+    }
+
     const getListProjects = () => {
         return Axios.get('/user/projects')
     }
@@ -51,5 +56,5 @@ export default function useAuth () {
         navigate('/login');
     }
 
-    return { signIn, signUp, User, getUser, getListProjects, logOut};
+    return { signIn, signUp, User, getUser, getListProjects, logOut, getUserByEmail};
 }

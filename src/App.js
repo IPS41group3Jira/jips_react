@@ -15,7 +15,7 @@ export const UserContext = createContext(null);
 
 function App() {
 
-	const { getUser, signIn, signUp, User } = useAuth();
+	const { getUser, signIn, signUp, User, getUserByEmail } = useAuth();
 
 	useEffect(() => {
         if(!User) {
@@ -24,7 +24,7 @@ function App() {
     }, [User])
 
 	return (
-		<UserContext.Provider value={{ getUser, signIn, signUp, User }}>
+		<UserContext.Provider value={{ getUser, signIn, signUp, User, getUserByEmail }}>
 			<div className="App">
 				<Routes>
 					<Route path="/login" element={<Login />} />
