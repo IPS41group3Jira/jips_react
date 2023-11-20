@@ -6,6 +6,7 @@ import Option from "../Controls/Select/Option";
 import Select from "../Controls/Select/Select";
 import Button from "../Button/Button";
 import {useState} from "react";
+import DragDropFiles from "./DragDropFiles";
 
 export default function TaskCreation({addTask, closeModal}) {
     const [task, setTask] = useState({
@@ -74,6 +75,7 @@ export default function TaskCreation({addTask, closeModal}) {
                             <Option value="in_press">In progress</Option>
                             <Option value="closed">Closed</Option>
                         </Select>
+                        <DragDropFiles/>
                         <div className="list-users">
                             <label className="label">Responsible Users</label>
                             <ol className="list-items">
