@@ -18,7 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import TaskCreation from "../TaskCreation/TaskCreation";
 
-export default function ProjectDetails() {
+export default function ProjectDetails({ onClose }) {
     const [projectDetails, setProjectDetails] = useState({
         name: "",
         description: "",
@@ -70,11 +70,15 @@ export default function ProjectDetails() {
         createProject(name, description, startDate, endDate).then((res) => {
             const project = res.data;
             Promise.all(userList.map((user) => addUserToProject(project.id, user.id, user.role))).then(() => {
-                tasks.map((task) => {
+                Promise.all(tasks.map((task) => {
                     createIssue(task.name, task.description, project.id, task.dueDate, task.priority, task.assigneeId ?? null, task.status);
+                })).then(() => {
+                    if (typeof onClose === 'function') {
+                        onClose();
+                    }
                 });
             });
-        })
+        });
     }
     return (
         <>

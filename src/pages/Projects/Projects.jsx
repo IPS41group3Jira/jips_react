@@ -27,7 +27,7 @@ export default function Projects() {
         getListProjects().then((response) => {
             setProjects(response.data);
         }).catch((error) => {
-            console.error("err")
+            console.error(error)
         });
     }, []);
     return (
@@ -48,8 +48,8 @@ export default function Projects() {
                     </div>
                 </Container>
             </main>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <ProjectDetails />
+            <Modal isOpen={isModalOpen} onClose={ closeModal }>
+                <ProjectDetails onClose={ closeModal } />
             </Modal>
         </>
     )
