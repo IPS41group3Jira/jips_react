@@ -114,19 +114,13 @@ export default function TaskCreation({ addTask, closeModal, newProject=true }) {
                             <Form.Group>
                                 <Form.Label className="label">Requires time</Form.Label>
                                 <div>
-                                    <Input placeHolder="Requires time"
-                                           value={task.creationDate}
-                                           onChange={(e) => handleInputChange("creationDate", e.target.value)}
-                                    ></Input>
+                                    <DatePicker selected={ creationDate } className="input" placeholderText="Start" onChange={(date) => setCreationDate(date)}/>
                                 </div>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label className="label">Remaining time</Form.Label>
                                 <div>
-                                    <Input placeHolder="Remaining time"
-                                           value={task.dueDate}
-                                           onChange={(e) => handleInputChange("dueDate", e.target.value)}
-                                    ></Input>
+                                    <DatePicker selected={ dueDate } className="input" placeholderText="Start" onChange={(date) => setDueDate(date)}/>
                                 </div>
                             </Form.Group>
                             <Form.Group>
@@ -138,7 +132,6 @@ export default function TaskCreation({ addTask, closeModal, newProject=true }) {
                                     ></Input>
                                 </div>
                             </Form.Group>
-
                         </div>
                     </Form.Group>
                     {!newProject && <Comments comments={comments} />}
