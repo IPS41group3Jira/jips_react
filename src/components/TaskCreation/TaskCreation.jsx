@@ -44,6 +44,7 @@ export default function TaskCreation({ addTask, closeModal, newProject=true }) {
 
     useEffect(() => {
         setTask({ ...task, creationDate, dueDate, status });
+        console.log(task)
     }, [dueDate, creationDate, status]);
 
     const handleInputChange = ((fieldName, value) => {
@@ -76,7 +77,7 @@ export default function TaskCreation({ addTask, closeModal, newProject=true }) {
                     <Form.Group>
                         <Form.Label className="label">Task name</Form.Label>
                         <div>
-                            <Input placeHolder="Task name"
+                            <Input placeholder="Task name"
                                    value={task.name}
                                    onChange={(e) => handleInputChange("name", e.target.value)}
                             ></Input>
@@ -126,7 +127,7 @@ export default function TaskCreation({ addTask, closeModal, newProject=true }) {
                             <Form.Group>
                                 <Form.Label className="label">Priority</Form.Label>
                                 <div>
-                                    <Input placeHolder="Priority"
+                                    <Input placeholder="Priority"
                                            value={task.priority}
                                            onChange={(e) => handleInputChange("priority", e.target.value)}
                                     ></Input>

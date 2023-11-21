@@ -50,7 +50,7 @@ export const AddUser = ({ tasks, addUser, setTasks, closeModal }) => {
                     <Form.Group>
                         <Form.Label>User email</Form.Label>
                         <div className="add_user_form-input-group">
-                            <Input placeHolder="User email" className="add_user_input" value="" onBlur={handleUserEmailInput} />
+                            <Input placeholder="User email" className="add_user_input" value="" onBlur={handleUserEmailInput} />
                             <FiSearch className="icon-search"/>
                         </div>
                     </Form.Group>

@@ -22,20 +22,15 @@ export default function ProjectDetails() {
     const [projectDetails, setProjectDetails] = useState({
         name: "",
         description: "",
-        startDate: "",
-        endDate: ""
-    })
+    });
+    
     const [tasks, setTasks] = useState([]);
     const [userList, setUserList] = useState([]);
-    const [userTask, setUserTask] = useState([]);
     const [isModalOpen, setIsModalUserOpen] = useState(false);
     const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
+    
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-
-    useEffect(() => {
-        setProjectDetails({ ...projectDetails, startDate, endDate });
-    }, [startDate, endDate]);
 
     const handleInputChange = ((fieldName, value) => {
         setProjectDetails(prevProject => ({
@@ -70,9 +65,9 @@ export default function ProjectDetails() {
     const saveProject = () => {
         console.log(tasks);
         console.log(userList);
-        const { name, description, start_date, end_date } = projectDetails;
+        const { name, description } = projectDetails;
 
-        createProject(name, description, start_date, end_date).then((res) => {
+        createProject(name, description, startDate, endDate).then((res) => {
             const project = res.data;
             Promise.all(userList.map((user) => addUserToProject(project.id, user.id, user.role))).then(() => {
                 tasks.map((task) => {
@@ -140,7 +135,7 @@ export default function ProjectDetails() {
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={closeModalUser}>
-                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} userTask={userTask} closeModal={ closeModalUser } />
+                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={ closeModalUser } />
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
                 <TaskCreation addTask={addTask} closeModal={closeModalTask}/>
