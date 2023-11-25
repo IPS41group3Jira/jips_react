@@ -75,7 +75,6 @@ export const AddUser = ({ tasks, addUser, setTasks, closeModal }) => {
                                         commentsCount={index}
                                         createdTime="11 hours"/>
                                 </div>
-
                             ))}
                         </div>
                     </Form.Group>

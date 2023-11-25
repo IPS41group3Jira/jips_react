@@ -18,8 +18,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import TaskCreation from "../TaskCreation/TaskCreation";
 
-export default function ProjectDetails({ onClose }) {
-    const [projectDetails, setProjectDetails] = useState({
+export default function ProjectDetails({ onClose , projectInfo}) {
+    const [projectDetails, setProjectDetails] = useState(projectInfo ?? {
         name: "",
         description: "",
     });
@@ -28,9 +28,9 @@ export default function ProjectDetails({ onClose }) {
     const [userList, setUserList] = useState([]);
     const [isModalOpen, setIsModalUserOpen] = useState(false);
     const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
-    
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+
+    const [startDate, setStartDate] = useState(() => {return projectInfo ? new Date(projectInfo.startDate) : new Date()});
+    const [endDate, setEndDate] = useState(() => {return projectInfo ? new Date(projectInfo.endDate) : new Date()});
 
     const handleInputChange = ((fieldName, value) => {
         setProjectDetails(prevProject => ({
@@ -126,7 +126,7 @@ export default function ProjectDetails({ onClose }) {
                         <div className="project-details__tasks">
                             {tasks.map((item, index) => (
                                 <TaskInfo key={ index } title={item.name}
-                                commentsCount="3" /> ))
+                                commentsCount="0" /> ))
                             }
                         </div>
                         <div className='button-block'>

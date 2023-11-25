@@ -22,11 +22,11 @@ export default function ProjectCard({project}) {
                     <span>15 users in project</span>
                 </div>
                 <div className="project-card_detail">
-                    <span onClick={openModal}>Details {project.id}</span>
+                    <span onClick={openModal}>Details</span>
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <ProjectDetails />
+                <ProjectDetails projectInfo={project} onClose={closeModal}/>
             </Modal>
         </>
     )

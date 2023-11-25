@@ -49,7 +49,7 @@ export default function Projects() {
                 </Container>
             </main>
             <Modal isOpen={isModalOpen} onClose={ closeModal }>
-                <ProjectDetails onClose={ closeModal } />
+                <ProjectDetails onClose={ closeModal } projectInfo={null}/>
             </Modal>
         </>
     )
