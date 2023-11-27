@@ -30,6 +30,25 @@ export default function Board() {
             })
         }
     }, User)
+
+    const outputTasks = (status = '') => {
+        const availabelTasks = tasks.sort((a, b) => {
+            if (a.priority > b.priority)
+                return 1;
+            else if (a.priority < b.priority)
+                return -1
+            return 0;
+        }).filter((a) => a.status == status);
+
+        return availabelTasks.map((item) => (
+            <TaskInfo
+                title={item.name}
+                status={item.status}
+                commentsCount={3}
+                createdTime={item.creationDate}
+            />
+        ))
+    }
     return (
         <>
             <div className="board">
@@ -47,27 +66,39 @@ export default function Board() {
                     <div className="project-stage">
                         <label className="project-stage__caption">New</label>
                         <div className="project-stage__tasks">
-                            {tasks.map((item) => (
-                                <TaskInfo
-                                    title={item.name}
-                                    status={item.status}
-                                    commentsCount={3}
-                                    createdTime={item.creationDate}
-                                />
-                            ))
-                            }
-
+                            {outputTasks("OPENED")}
+                        </div>
+                    </div>
+                    <div className="project-stage">
+                        <label className="project-stage__caption">To do</label>
+                        <div className="project-stage__tasks">
+                            {outputTasks("TO_DO")}
+                        </div>
+                    </div>
+                    <div className="project-stage">
+                        <label className="project-stage__caption">In process</label>
+                        <div className="project-stage__tasks">
+                            {outputTasks("IN_PROGRESS")}
                         </div>
                     </div>
 
                     <div className="project-stage">
-                        <label className="project-stage__caption">In process</label>
-                        <div className="project-stage__tasks"></div>
+                        <label className="project-stage__caption">In testing</label>
+                        <div className="project-stage__tasks">
+                            {outputTasks("IN_TESTING")}
+                        </div>
                     </div>
-
                     <div className="project-stage">
                         <label className="project-stage__caption">Closed</label>
-                        <div className="project-stage__tasks"></div>
+                        <div className="project-stage__tasks">
+                            {outputTasks("DONE")}
+                        </div>
+                    </div>
+                    <div className="project-stage">
+                        <label className="project-stage__caption">Blocked</label>
+                        <div className="project-stage__tasks">
+                            {outputTasks("BLOCKED")}
+                        </div>
                     </div>
                 </div>
             </div>
