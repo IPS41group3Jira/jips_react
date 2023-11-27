@@ -33,7 +33,7 @@ export default function useAuth () {
         return Axios.get(`/user/${id}`).then(user => {
             setUser(user.data);
         }).catch(() => {
-            navigate('/login');
+            logOut();
         });
     }
 
@@ -53,6 +53,8 @@ export default function useAuth () {
 
     const logOut = () => {
         localStorage.clear()
+        console.log("storage cleared");
+        setUser(null);
         navigate('/login');
     }
     const updateUser = (firstName, lastName, userId = '') => {

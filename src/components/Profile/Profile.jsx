@@ -7,7 +7,7 @@ import {UserContext} from "../../App";
 import useAuth from "../../Hooks/User";
 
 export default function Profile({closeModal}) {
-    const {User} = useContext(UserContext)
+    const {User, logOut} = useContext(UserContext)
     const {updateUser} = useAuth();
     const [user, setUser] = useState( () => {
         if (User) {
@@ -58,8 +58,12 @@ export default function Profile({closeModal}) {
                         <Form.Label>Email</Form.Label>
                         <div><span>{User.email}</span></div>
                     </Form.Group>
-                    <div className="profile-btn">
+                    <div className="profile-btn d-flex gap-3">
                         <Button text={"Save"} />
+                        <Button text={"Logout"} onClick={(e) => {
+                            e.preventDefault();
+                            logOut();
+                        }} />
                     </div>
                 </Form>
             </div>

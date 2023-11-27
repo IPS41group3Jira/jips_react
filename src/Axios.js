@@ -1,6 +1,9 @@
 import a from "axios"
+import { useNavigate } from "react-router-dom";
 
 let config = require('./config.json');
+
+// const navigate = useNavigate();/
 
 const baseurl = `${config.host}/api`;
 
@@ -64,7 +67,6 @@ Axios.interceptors.response.use(
         // if (response.data) {
         //     handleData(response.data);
         // }
-
         return response;
     },
     (error) => {
