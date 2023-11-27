@@ -1,12 +1,13 @@
 .task_info {
     background-color: var(--gray-color);
     padding: 10px 18px;
-    width: 450px;
+    width: clamp(24em, 100%, 26em);
     font-size: 18px;
     border-radius: 20px;
     color: var(--gray-font-color);
 
 }
+
 .task_state,
 .task_title,
 .comments_info,
