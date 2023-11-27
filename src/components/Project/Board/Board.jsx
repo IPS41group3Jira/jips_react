@@ -65,7 +65,6 @@ export default function Board() {
                             <Input className="className" name="search" placeholder="Search..."/>
                             <Input name="pearson-filter" placeholder="Person"/>
                         </div>
-                        <Buttton text="New task" onClick={openModal}/>
                     </div>
                 </div>
                 <div className="board__body">
