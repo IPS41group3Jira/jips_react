@@ -69,43 +69,23 @@ export default function Board() {
                     </div>
                 </div>
                 <div className="board__body">
-                    <div className="project-stage">
-                        <label className="project-stage__caption">New</label>
-                        <div className="project-stage__tasks">
-                            {outputTasks("OPENED")}
-                        </div>
-                    </div>
-                    <div className="project-stage">
-                        <label className="project-stage__caption">To do</label>
-                        <div className="project-stage__tasks">
-                            {outputTasks("TO_DO")}
-                        </div>
-                    </div>
-                    <div className="project-stage">
-                        <label className="project-stage__caption">In process</label>
-                        <div className="project-stage__tasks">
-                            {outputTasks("IN_PROGRESS")}
-                        </div>
-                    </div>
-
-                    <div className="project-stage">
-                        <label className="project-stage__caption">In testing</label>
-                        <div className="project-stage__tasks">
-                            {outputTasks("IN_TESTING")}
-                        </div>
-                    </div>
-                    <div className="project-stage">
-                        <label className="project-stage__caption">Closed</label>
-                        <div className="project-stage__tasks">
-                            {outputTasks("DONE")}
-                        </div>
-                    </div>
-                    <div className="project-stage">
-                        <label className="project-stage__caption">Blocked</label>
-                        <div className="project-stage__tasks">
-                            {outputTasks("BLOCKED")}
-                        </div>
-                    </div>
+                    {
+                        [
+                            ['OPENED', 'New'],
+                            ['TO_DO', 'To do'],
+                            ['IN_PROGRESS', 'In process'],
+                            ['IN_TESTING', 'In testing'],
+                            ['DONE', 'Closed'],
+                            ['BLOCKED', 'Blocked']
+                        ].map(([value, label]) => (
+                            <div className="project-stage">
+                                <label className="project-stage__caption">{ label }</label>
+                                <div className="project-stage__tasks">
+                                    {outputTasks(value)}
+                                </div>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
 
