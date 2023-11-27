@@ -12,18 +12,22 @@ import {UserContext} from "../../../App";
 
 export default function Board() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [userList, setUserList] = useState([]);
+    const [selectTask, setSelectTask] = useState(null);
     const [tasks, setTasks] = useState([]);
     const {User} = useContext(UserContext)
 
 
-    const openModal = () => {
+    const openModal = (val) => {
+        setSelectTask(val)
         setIsModalOpen(true);
     };
-    
+
     const closeModal = () => {
         setIsModalOpen(false);
+        setSelectTask(null)
     };
-    useEffect( () => {
+    useEffect(() => {
         if (User) {
             getIssueByAssignee(User.id).then((response) => {
                 setTasks(response.data)
@@ -41,12 +45,14 @@ export default function Board() {
         }).filter((a) => a.status == status);
 
         return availabelTasks.map((item) => (
-            <TaskInfo
-                title={item.name}
-                status={item.status}
-                commentsCount={3}
-                createdTime={item.creationDate}
-            />
+            <div onClick={() => openModal(item)}>
+                <TaskInfo
+                    title={item.name}
+                    status={item.status}
+                    commentsCount={3}
+                    createdTime={item.creationDate}
+                />
+            </div>
         ))
     }
     return (
@@ -56,10 +62,10 @@ export default function Board() {
                     <label name="project-name">Project name</label>
                     <div className="board__controls">
                         <div>
-                            <Input className="className" name="search" placeholder="Search..." />
-                            <Input name="pearson-filter" placeholder="Person" />
+                            <Input className="className" name="search" placeholder="Search..."/>
+                            <Input name="pearson-filter" placeholder="Person"/>
                         </div>
-                        <Buttton text="New task" onClick={openModal} />
+                        <Buttton text="New task" onClick={openModal}/>
                     </div>
                 </div>
                 <div className="board__body">
@@ -104,7 +110,7 @@ export default function Board() {
             </div>
 
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <TaskCreation newProject={ false } />
+                <TaskCreation newProject={false} closeModal={closeModal} issue={selectTask} userList={userList}/>
             </Modal>
         </>
     );

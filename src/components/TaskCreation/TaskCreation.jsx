@@ -10,22 +10,28 @@ import DragDropFiles from "./DragDropFiles";
 import Comments from "./Comments/Comments";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import SelectReact from 'react-select';
  
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-export default function TaskCreation({ addTask, closeModal, newProject=true,  }) {
+export default function TaskCreation({ addTask, closeModal, newProject=true, userList = null , issue = null}) {
     const [status, setStatus] = useState();
-    const [task, setTask] = useState({
-        name: "",
-        description: "",
-        projectId: 3,
-        creationDate: new Date(),
-        dueDate: null,
-        priority: "",
-        assigneeId: "",
-        status: "",
-
+    const [assigneeId, setAssigneeId] = useState(null)
+    const [task, setTask] = useState(() => {
+        if (issue) return issue
+        else {
+           return {
+               name: "",
+               description: "",
+               projectId: 3,
+               creationDate: new Date(),
+               dueDate: null,
+               priority: "",
+               assigneeId: "",
+               status: "",
+           }
+        }
     });
     const comments = [{
         commentId: 1,
@@ -41,11 +47,16 @@ export default function TaskCreation({ addTask, closeModal, newProject=true,  })
 
     const [creationDate, setCreationDate] = useState(new Date());
     const [dueDate, setDueDate] = useState(new Date());
+    const options = userList.map(user => ({
+        value: user.id,
+        label: `${user.firstName} ${user.lastName}`
+    }))
 
     useEffect(() => {
-        setTask({ ...task, creationDate, dueDate, status });
-        console.log(task)
-    }, [dueDate, creationDate, status]);
+        if (!issue) {
+            setTask({...task, creationDate, dueDate, status, assigneeId});
+        }
+    }, [dueDate, creationDate, status, assigneeId]);
 
     const handleInputChange = ((fieldName, value) => {
         setTask(prevTask => ({
@@ -105,11 +116,7 @@ export default function TaskCreation({ addTask, closeModal, newProject=true,  })
                         <DragDropFiles />
                         <div className="list-users">
                             <label className="label">Responsible Users</label>
-                            <ol className="list-items">
-                                {users.map((item) => (
-                                    <ListItem title={item}/>
-                                ))}
-                            </ol>
+                            <SelectReact defaultValue={assigneeId} onChange={(val) => setAssigneeId(val.value)} options={options} className="basic-single"  />
                         </div>
                         <div className="task-time">
                             <Form.Group>

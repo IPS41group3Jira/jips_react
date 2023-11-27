@@ -6,31 +6,36 @@ import Input from "../Controls/Input/Input";
 import Textarea from "../Controls/Input/Textarea";
 import Modal from "../Modal/Modal";
 import {useEffect, useState} from "react";
-import { AddUser } from "../AddUser/AddUser";
+import {AddUser} from "../AddUser/AddUser";
 
-import { createProject, addUserToProject, getProjectUsers } from "../../Hooks/Project";
-import { createIssue, getIssueByProject } from "../../Hooks/Issue";
+import {createProject, addUserToProject, getProjectUsers} from "../../Hooks/Project";
+import {createIssue, getIssueByProject} from "../../Hooks/Issue";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
- 
+
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import TaskCreation from "../TaskCreation/TaskCreation";
 
-export default function ProjectDetails({ onClose , projectInfo}) {
+export default function ProjectDetails({onClose, projectInfo}) {
     const [projectDetails, setProjectDetails] = useState(projectInfo ?? {
         name: "",
         description: "",
     });
-    
+
     const [tasks, setTasks] = useState([]);
+    const [selectTask, setSelectTask] = useState({});
     const [userList, setUserList] = useState([]);
     const [isModalOpen, setIsModalUserOpen] = useState(false);
     const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
 
-    const [startDate, setStartDate] = useState(() => {return projectInfo ? new Date(projectInfo.startDate) : new Date()});
-    const [endDate, setEndDate] = useState(() => {return projectInfo ? new Date(projectInfo.endDate) : new Date()});
+    const [startDate, setStartDate] = useState(() => {
+        return projectInfo ? new Date(projectInfo.startDate) : new Date()
+    });
+    const [endDate, setEndDate] = useState(() => {
+        return projectInfo ? new Date(projectInfo.endDate) : new Date()
+    });
 
     const handleInputChange = ((fieldName, value) => {
         setProjectDetails(prevProject => ({
@@ -42,7 +47,8 @@ export default function ProjectDetails({ onClose , projectInfo}) {
         setIsModalUserOpen(true);
     };
 
-    const openModalTask = () => {
+    const openModalTask = (task) => {
+        setSelectTask(task)
         setIsModalTaskOpen(true);
     };
     const closeModalUser = () => {
@@ -50,6 +56,7 @@ export default function ProjectDetails({ onClose , projectInfo}) {
     };
     const closeModalTask = () => {
         setIsModalTaskOpen(false);
+        setSelectTask(null);
     };
 
     const addTask = (newTask) => {
@@ -65,7 +72,7 @@ export default function ProjectDetails({ onClose , projectInfo}) {
     const saveProject = () => {
         console.log(tasks);
         console.log(userList);
-        const { name, description } = projectDetails;
+        const {name, description} = projectDetails;
 
         createProject(name, description, startDate, endDate).then((res) => {
             const project = res.data;
@@ -80,7 +87,7 @@ export default function ProjectDetails({ onClose , projectInfo}) {
             });
         });
     }
-    useEffect( () => {
+    useEffect(() => {
         if (projectInfo) {
             getIssueByProject(projectInfo.id).then((response) => {
                 setTasks(response.data)
@@ -105,18 +112,21 @@ export default function ProjectDetails({ onClose , projectInfo}) {
                     <div className="project-dates">
                         <div>
                             <label>Start</label>
-                            <DatePicker selected={ startDate } className="input" placeholderText="Start" onChange={(date) => setStartDate(date)}/>
+                            <DatePicker selected={startDate} className="input" placeholderText="Start"
+                                        onChange={(date) => setStartDate(date)}/>
                         </div>
                         <div>
                             <label>End</label>
-                            <DatePicker selected={ endDate } className="input" placeholderText="End" onChange={(date) => setEndDate(date)}/>
+                            <DatePicker selected={endDate} className="input" placeholderText="End"
+                                        onChange={(date) => setEndDate(date)}/>
                         </div>
                     </div>
                 </div>
                 <div>
                     <label>Description</label>
-                    <Textarea className=' project-info' rows="5" placeholder="Description" value={projectDetails.description}
-                            onChange={(e) => handleInputChange("description", e.target.value)}></Textarea>
+                    <Textarea className=' project-info' rows="5" placeholder="Description"
+                              value={projectDetails.description}
+                              onChange={(e) => handleInputChange("description", e.target.value)}></Textarea>
                 </div>
                 <div className='project-details-block__main'>
                     <div>
@@ -124,7 +134,8 @@ export default function ProjectDetails({ onClose , projectInfo}) {
                         <div className='project-details__tasks'>
                             {
                                 userList.map((user, index) => (
-                                    <UserCard key={index} name={`${user.firstName} ${user.lastName}`} role={ user.role.id } />
+                                    <UserCard key={index} name={`${user.firstName} ${user.lastName}`}
+                                              role={user.role.id ?? user.role}/>
                                 ))
                             }
                         </div>
@@ -136,8 +147,10 @@ export default function ProjectDetails({ onClose , projectInfo}) {
                         <h3>Tasks</h3>
                         <div className="project-details__tasks">
                             {tasks.map((item, index) => (
-                                <TaskInfo key={ index } title={item.name}
-                                commentsCount="0" status={item.status}/> ))
+                                <div onClick={() => openModalTask(item)}>
+                                    <TaskInfo key={index} title={item.name}
+                                              commentsCount="0" status={item.status} createdTime={item.creationDate}/>
+                                </div>))
                             }
                         </div>
                         <div className='button-block'>
@@ -150,11 +163,12 @@ export default function ProjectDetails({ onClose , projectInfo}) {
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={closeModalUser}>
-                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={ closeModalUser } />
+                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={closeModalUser}/>
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
-                <TaskCreation addTask={addTask} closeModal={closeModalTask}/>
+                <TaskCreation addTask={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask}/>
             </Modal>
+
         </>
     );
 };
