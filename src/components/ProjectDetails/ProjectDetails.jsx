@@ -8,7 +8,7 @@ import Modal from "../Modal/Modal";
 import {useEffect, useState} from "react";
 import {AddUser} from "../AddUser/AddUser";
 
-import {createProject, addUserToProject, getProjectUsers} from "../../Hooks/Project";
+import {createProject, addUserToProject, getProjectUsers, deleteUserProject,} from "../../Hooks/Project";
 import {createIssue, getIssueByProject} from "../../Hooks/Issue";
 
 import DatePicker from "react-datepicker";
@@ -67,6 +67,18 @@ export default function ProjectDetails({onClose, projectInfo}) {
     const addUserList = (newUser) => {
         setUserList([...userList, newUser])
         console.log('UserList', userList)
+    }
+    const deleteUser = (user) => {
+        let isError = false;
+        if (user.role.id) {
+            deleteUserProject(projectInfo.id, user.id).then().catch((error) => {
+                isError = true;
+            })
+        }
+        if (!isError) {
+            const updateUserList = userList.filter(userList => userList.id !== user.id);
+            setUserList(updateUserList)
+        }
     }
 
     const saveProject = () => {
@@ -135,7 +147,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
                             {
                                 userList.map((user, index) => (
                                     <UserCard key={index} name={`${user.firstName} ${user.lastName}`}
-                                              role={user.role.id ?? user.role}/>
+                                              role={user.role.id ?? user.role} user={user} deleteUser={deleteUser}/>
                                 ))
                             }
                         </div>

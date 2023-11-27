@@ -20,4 +20,4 @@ const deleteUserProject = (projectId = '', userId = '') => {
     return Axios.delete(`project/${projectId}/user/${userId}`)
 }
 
-export { createProject, addUserToProject , getProjectUsers};
+export { createProject, addUserToProject , getProjectUsers, deleteUserProject};

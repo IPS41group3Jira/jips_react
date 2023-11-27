@@ -3,7 +3,7 @@ import {VscAccount} from "react-icons/vsc";
 import { IoIosCloseCircle } from "react-icons/io";
 import rolesMap from "../../Hooks/Role"
 
-export default function UserCard({name, role}) {
+export default function UserCard({name, role, deleteUser, user}) {
     return (
         <div className='user-card'>
             <div className='user-card__info'>
@@ -14,7 +14,7 @@ export default function UserCard({name, role}) {
             <div className='editing-user'>
                 <a className='editing-user__link'>Block</a>
                 <a className='editing-user__link'>Edit</a>
-                <IoIosCloseCircle className='button-close'/>
+                <IoIosCloseCircle className='button-close' onClick={() => deleteUser(user)}/>
             </div>
         </div>
     );
