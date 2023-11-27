@@ -26,6 +26,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
 
     const [tasks, setTasks] = useState([]);
     const [selectTask, setSelectTask] = useState({});
+    const [selectUser, setSelectUser] = useState(null);
     const [userList, setUserList] = useState([]);
     const [isModalOpen, setIsModalUserOpen] = useState(false);
     const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
@@ -43,7 +44,9 @@ export default function ProjectDetails({onClose, projectInfo}) {
             [fieldName]: value
         }))
     })
-    const openModalUser = () => {
+    const openModalUser = (user) => {
+        setSelectUser(user);
+        console.log(selectUser)
         setIsModalUserOpen(true);
     };
 
@@ -52,6 +55,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
         setIsModalTaskOpen(true);
     };
     const closeModalUser = () => {
+        setSelectUser(null);
         setIsModalUserOpen(false);
     };
     const closeModalTask = () => {
@@ -65,7 +69,16 @@ export default function ProjectDetails({onClose, projectInfo}) {
     }
 
     const addUserList = (newUser) => {
-        setUserList([...userList, newUser])
+        //check copy
+        const userIndex = userList.findIndex(exUser => exUser.id === newUser.id);
+
+        if (userIndex !== -1) {
+            const updateUserList = userList.map((user, index) => (index === userIndex ? newUser : user));
+            setUserList(updateUserList);
+            console.log(updateUserList);
+        } else {
+            setUserList([...userList, newUser]);
+        }
         console.log('UserList', userList)
     }
     const deleteUser = (user) => {
@@ -147,12 +160,12 @@ export default function ProjectDetails({onClose, projectInfo}) {
                             {
                                 userList.map((user, index) => (
                                     <UserCard key={index} name={`${user.firstName} ${user.lastName}`}
-                                              role={user.role.id ?? user.role} user={user} deleteUser={deleteUser}/>
+                                              role={user.role.id ?? user.role} user={user} deleteUser={deleteUser} openModal={() => openModalUser(user)} />
                                 ))
                             }
                         </div>
                         <div className='button-block'>
-                            <Button text='Add' onClick={openModalUser}/>
+                            <Button text='Add' onClick={() => openModalUser(null)}/>
                         </div>
                     </div>
                     <div className='main-tasks'>
@@ -175,7 +188,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={closeModalUser}>
-                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={closeModalUser}/>
+                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={closeModalUser} editUser={selectUser} projectId={projectInfo ? projectInfo.id : 0}/>
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
                 <TaskCreation addTask={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask}/>
