@@ -5,45 +5,48 @@ import Textarea from "../Controls/Input/Textarea";
 import Option from "../Controls/Select/Option";
 import Select from "../Controls/Select/Select";
 import Button from "../Button/Button";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import DragDropFiles from "./DragDropFiles";
 import Comments from "./Comments/Comments";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import SelectReact from 'react-select';
- 
+
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import Axios from "../../Axios";
 
-export default function TaskCreation({ addTask, closeModal, newProject=true, userList = null , issue = null}) {
+export default function TaskCreation({addTask, closeModal, newProject = true, userList = null, issue = null}) {
     const [status, setStatus] = useState();
     const [assigneeId, setAssigneeId] = useState(null)
     const [task, setTask] = useState(() => {
         if (issue) return issue
         else {
-           return {
-               name: "",
-               description: "",
-               projectId: 3,
-               creationDate: new Date(),
-               dueDate: null,
-               priority: "",
-               assigneeId: "",
-               status: "",
-           }
+            return {
+                name: "",
+                description: "",
+                projectId: 3,
+                creationDate: new Date(),
+                dueDate: null,
+                priority: "",
+                assigneeId: "",
+                status: "",
+            }
         }
     });
-    const comments = [{
-        commentId: 1,
-        creationDate: new Date(),
-        text: "All is well",
-        creatorName: "Den",
-    }, {
-        commentId: 1,
-        creationDate: new Date(),
-        text: "All is bad",
-        creatorName: "Den",
-    }]
+
+    const [comments, setComments] = useState([])
+    useEffect(() => {
+        Axios.get(`/comment/issue/${task.id}`).then(comments => {
+            setComments(comments.data);
+        }).catch((err) => {
+            console.log(err)
+        });
+    }, [])
+
+    useEffect(() => {
+        console.log(comments)
+    }, [comments])
 
     const [creationDate, setCreationDate] = useState(new Date());
     const [dueDate, setDueDate] = useState(new Date());
@@ -106,29 +109,32 @@ export default function TaskCreation({ addTask, closeModal, newProject=true, use
                     </Form.Group>
                     <Form.Group className="task-group">
                         <Select labelBefore="State:" onChange={onChangeSelect}>
-                            <Option value ="BLOCKED">Blocked</Option>
-                            <Option value ="OPENED" selected>Opened</Option>
-                            <Option value ="TO_DO">To do</Option>
-                            <Option value ="IN_PROGRESS">In progress</Option>
-                            <Option value ="IN_TESTING">In testing</Option>
-                            <Option value ="DONE">Done</Option>
+                            <Option value="BLOCKED">Blocked</Option>
+                            <Option value="OPENED" selected>Opened</Option>
+                            <Option value="TO_DO">To do</Option>
+                            <Option value="IN_PROGRESS">In progress</Option>
+                            <Option value="IN_TESTING">In testing</Option>
+                            <Option value="DONE">Done</Option>
                         </Select>
-                        <DragDropFiles />
+                        <DragDropFiles/>
                         <div className="list-users">
                             <label className="label">Responsible Users</label>
-                            <SelectReact defaultValue={assigneeId} onChange={(val) => setAssigneeId(val.value)} options={options} className="basic-single"  />
+                            <SelectReact defaultValue={assigneeId} onChange={(val) => setAssigneeId(val.value)}
+                                         options={options} className="basic-single"/>
                         </div>
                         <div className="task-time">
                             <Form.Group>
                                 <Form.Label className="label">Requires time</Form.Label>
                                 <div>
-                                    <DatePicker selected={ creationDate } className="input" placeholderText="Start" onChange={(date) => setCreationDate(date)}/>
+                                    <DatePicker selected={creationDate} className="input" placeholderText="Start"
+                                                onChange={(date) => setCreationDate(date)}/>
                                 </div>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label className="label">Remaining time</Form.Label>
                                 <div>
-                                    <DatePicker selected={ dueDate } className="input" placeholderText="Start" onChange={(date) => setDueDate(date)}/>
+                                    <DatePicker selected={dueDate} className="input" placeholderText="Start"
+                                                onChange={(date) => setDueDate(date)}/>
                                 </div>
                             </Form.Group>
                             <Form.Group>
@@ -142,7 +148,7 @@ export default function TaskCreation({ addTask, closeModal, newProject=true, use
                             </Form.Group>
                         </div>
                     </Form.Group>
-                    {!newProject && <Comments comments={comments} />}
+                    {!newProject && <Comments comments={comments}/>}
                     <div className="btn">
                         <Button text="Save" type="submit"/>
                     </div>
