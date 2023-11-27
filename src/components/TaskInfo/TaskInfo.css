@@ -20,6 +20,7 @@
 .task_state {
     font-weight: 600;
 }
+
 .task_state > .select.undefined {
     width: 100%;
 }

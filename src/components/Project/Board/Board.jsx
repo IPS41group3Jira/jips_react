@@ -48,7 +48,6 @@ export default function Board() {
             <div onClick={() => openModal(item)}>
                 <TaskInfo
                     title={item.name}
-                    status={item.status}
                     commentsCount={3}
                     createdTime={item.creationDate}
                 />
