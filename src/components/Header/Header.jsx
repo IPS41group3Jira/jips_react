@@ -35,7 +35,7 @@ export default function Header() {
 				{/* Controls */}
 			</header>
 			<Modal isOpen={isModalOpen} onClose={closeModal}>
-				<Profile />
+				<Profile closeModal={closeModal}/>
 			</Modal>
 		</>
 	);

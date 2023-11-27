@@ -36,7 +36,7 @@ export default function Board() {
     }, User)
 
     const outputTasks = (status = '') => {
-        const availabelTasks = tasks.sort((a, b) => {
+        const availableTasks = tasks.sort((a, b) => {
             if (a.priority > b.priority)
                 return 1;
             else if (a.priority < b.priority)
@@ -44,7 +44,7 @@ export default function Board() {
             return 0;
         }).filter((a) => a.status == status);
 
-        return availabelTasks.map((item) => (
+        return availableTasks.map((item) => (
             <div onClick={() => openModal(item)}>
                 <TaskInfo
                     title={item.name}

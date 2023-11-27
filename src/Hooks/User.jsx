@@ -55,6 +55,9 @@ export default function useAuth () {
         localStorage.clear()
         navigate('/login');
     }
+    const updateUser = (firstName, lastName, userId = '') => {
+        return Axios.put(`user/${userId}`, {firstName, lastName})
+    }
 
-    return { signIn, signUp, User, getUser, getListProjects, logOut, getUserByEmail};
+    return { signIn, signUp, User, getUser, getListProjects, logOut, getUserByEmail, updateUser};
 }
