@@ -5,7 +5,7 @@ import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
 import './Select.css';
 import './../Controls.css';
 
-function Select({ children, labelBefore, onChange, className, ...attrs }) {
+function Select({ children, value, labelBefore, onChange, className, ...attrs }) {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [val, setVal] = useState();
@@ -24,14 +24,14 @@ function Select({ children, labelBefore, onChange, className, ...attrs }) {
 
 	useEffect(() => {
 		children.map(child => {
-			if (child.props.selected) {
+			if ((value && value == child.props.value) || (child.props.selected && !value)) {
 				handleOptionClick(child.props.value, child.props.children);
 			}
 		})
 	}, [])
 
 	return (
-		<div className={`select ${className}  ${isOpen ? 'open' : ''}`} { ...attrs }>
+		<div className={`select ${className}  ${isOpen ? 'open' : ''}`} { ...attrs } onClick={(e) => {e.stopPropagation()}}>
 			<div className="select__header" onClick={toggleSelect}>
 				{ labelBefore && <span className="select__label">{labelBefore}</span> }
 				<span className="select__current-value">{val}</span>
