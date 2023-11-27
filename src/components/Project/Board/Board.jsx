@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Board.css';
 
 import Buttton from '../../Button/Button';
@@ -7,9 +7,14 @@ import TaskInfo from '../../TaskInfo/TaskInfo';
 import Modal from '../../Modal/Modal';
 import TaskCreation from "../../TaskCreation/TaskCreation";
 import {AddUser} from "../../AddUser/AddUser";
+import {getIssueByAssignee} from "../../../Hooks/Issue";
+import {UserContext} from "../../../App";
 
 export default function Board() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [tasks, setTasks] = useState([]);
+    const {User} = useContext(UserContext)
+
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -18,7 +23,13 @@ export default function Board() {
     const closeModal = () => {
         setIsModalOpen(false);
     };
-    
+    useEffect( () => {
+        if (User) {
+            getIssueByAssignee(User.id).then((response) => {
+                setTasks(response.data)
+            })
+        }
+    }, User)
     return (
         <>
             <div className="board">
@@ -36,69 +47,16 @@ export default function Board() {
                     <div className="project-stage">
                         <label className="project-stage__caption">New</label>
                         <div className="project-stage__tasks">
-                            <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                                showStatus="true"
-                            />
-                            <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                                showStatus="true"
-                            />
-                            <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                                showStatus="true"
-                            />
-                            <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                                showStatus="true"
-                            />
-                            <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                                showStatus="true"
-                            />
-                            <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                                showStatus="true"
-                            />
-                            <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                                showStatus="true"
-                            />
-                             <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                                showStatus="true"
-                            />
-                             <TaskInfo
-                                title="Create new task"
-                                status="New"
-                                commentsCount={3}
-                                createdTime="10 hours"
-                                showStatus="true"
-                            />
+                            {tasks.map((item) => (
+                                <TaskInfo
+                                    title={item.name}
+                                    status={item.status}
+                                    commentsCount={3}
+                                    createdTime={item.creationDate}
+                                />
+                            ))
+                            }
+
                         </div>
                     </div>
 

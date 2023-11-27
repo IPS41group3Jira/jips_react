@@ -13,4 +13,8 @@ const addUserToProject = (projectId = '', userId = '', roleId = '') => {
     return Axios.post(`/project/${projectId}/user`, { userId, roleId });
 }
 
-export { createProject, addUserToProject };
+const getProjectUsers =  (projectId = '') => {
+    return Axios.get(`/project/${projectId}/users`)
+}
+
+export { createProject, addUserToProject , getProjectUsers};

@@ -5,19 +5,23 @@ import {VscAccount} from "react-icons/vsc";
 import Select from '../Controls/Select/Select';
 import Option from '../Controls/Select/Option';
 
-export default function TaskInfo({title, status, commentsCount, createdTime, showStatus}) {
+export default function TaskInfo({title, status, commentsCount, createdTime}) {
     const onChangeSelect = (value, label) => {
         // alert(value);
         console.log(value)
+    }
+    const parseDate = (date) => {
+        date = new Date(date);
+        return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
     }
 
     return (
         <div className="task_info d-flex flex-column">
             <Row className="mb-auto">
                 <Col sm={6} className="task_title"><span>{title}</span></Col>
-                {showStatus &&
+                {status &&
                     <Col sm={6} className="task_state">
-                        <Select labelBefore="State:" onChange={onChangeSelect}>
+                        <Select labelBefore="State:" onChange={onChangeSelect} value={status}>
                             <Option value ="blocked">Blocked</Option>
                             <Option value ="opened" selected>Opened</Option>
                             <Option value ="to_do">To do</Option>
@@ -37,8 +41,8 @@ export default function TaskInfo({title, status, commentsCount, createdTime, sho
                 </Col>
                 <Col>
                     <div className="creation_info">
-                        <span className="time">{createdTime}</span>
-                        {showStatus &&
+                        <span className="time">{parseDate(createdTime)}</span>
+                        {status &&
                             <VscAccount className="icon_account"/>
                         }
                     </div>

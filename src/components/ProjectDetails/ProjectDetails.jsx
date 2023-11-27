@@ -8,8 +8,8 @@ import Modal from "../Modal/Modal";
 import {useEffect, useState} from "react";
 import { AddUser } from "../AddUser/AddUser";
 
-import { createProject, addUserToProject } from "../../Hooks/Project";
-import { createIssue } from "../../Hooks/Issue";
+import { createProject, addUserToProject, getProjectUsers } from "../../Hooks/Project";
+import { createIssue, getIssueByProject } from "../../Hooks/Issue";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -80,6 +80,17 @@ export default function ProjectDetails({ onClose , projectInfo}) {
             });
         });
     }
+    useEffect( () => {
+        if (projectInfo) {
+            getIssueByProject(projectInfo.id).then((response) => {
+                setTasks(response.data)
+            })
+            getProjectUsers(projectInfo.id).then((response) => {
+                setUserList(response.data)
+            })
+        }
+        console.log(projectInfo)
+    }, [projectInfo]);
     return (
         <>
             <div className='project-details-block'>
@@ -113,7 +124,7 @@ export default function ProjectDetails({ onClose , projectInfo}) {
                         <div className='project-details__tasks'>
                             {
                                 userList.map((user, index) => (
-                                    <UserCard key={index} name={`${user.firstName} ${user.lastName}`} role={ user.role } />
+                                    <UserCard key={index} name={`${user.firstName} ${user.lastName}`} role={ user.role.id } />
                                 ))
                             }
                         </div>
@@ -126,7 +137,7 @@ export default function ProjectDetails({ onClose , projectInfo}) {
                         <div className="project-details__tasks">
                             {tasks.map((item, index) => (
                                 <TaskInfo key={ index } title={item.name}
-                                commentsCount="0" /> ))
+                                commentsCount="0" status={item.status}/> ))
                             }
                         </div>
                         <div className='button-block'>
