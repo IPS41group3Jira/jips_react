@@ -95,12 +95,12 @@ export default function TaskCreation({ addTask, closeModal, newProject=true,  })
                     </Form.Group>
                     <Form.Group className="task-group">
                         <Select labelBefore="State:" onChange={onChangeSelect}>
-                            <Option value ="blocked">Blocked</Option>
-                            <Option value ="opened" selected>Opened</Option>
-                            <Option value ="to_do">To do</Option>
-                            <Option value ="in_progress">In progress</Option>
-                            <Option value ="in_testing">In testing</Option>
-                            <Option value ="done">Done</Option>
+                            <Option value ="BLOCKED">Blocked</Option>
+                            <Option value ="OPENED" selected>Opened</Option>
+                            <Option value ="TO_DO">To do</Option>
+                            <Option value ="IN_PROGRESS">In progress</Option>
+                            <Option value ="IN_TESTING">In testing</Option>
+                            <Option value ="DONE">Done</Option>
                         </Select>
                         <DragDropFiles />
                         <div className="list-users">
