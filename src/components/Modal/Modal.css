@@ -1,7 +1,7 @@
 .ui-modal-wrapper {
     width: 100vw;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.1);
@@ -18,6 +18,7 @@
 .ui-modal {
     width: fit-content;
     height: fit-content;
+    overflow: hidden;
 }
 
 .ui-modal__header {
