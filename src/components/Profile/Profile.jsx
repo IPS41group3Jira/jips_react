@@ -7,7 +7,7 @@ import {UserContext} from "../../App";
 import useAuth from "../../Hooks/User";
 
 export default function Profile({closeModal}) {
-    const {User, logOut} = useContext(UserContext)
+    const {User, logOut, getUser} = useContext(UserContext)
     const {updateUser} = useAuth();
     const [user, setUser] = useState( () => {
         if (User) {
@@ -23,9 +23,11 @@ export default function Profile({closeModal}) {
         }
     })
 
-    const saveUser = () => {
+    const saveUser = (e) => {
+        e.preventDefault();
         if (User){
             updateUser(user.firstName, user.lastName, User.id).then(() => {
+                getUser();
                 closeModal();
             })
         }
@@ -40,7 +42,7 @@ export default function Profile({closeModal}) {
     return (
         <>
             <div>
-                <Form className="profile-form" onSubmit={saveUser}>
+                <Form className="profile-form" onSubmit={(e) => saveUser(e)}>
                     <label className="profile-title">Profile</label>
                     <Form.Group className='profile-group'>
                         <Form.Label>First Name</Form.Label>

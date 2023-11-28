@@ -14,7 +14,7 @@ export const AddUser = ({tasks, addUser, setTasks, closeModal, editUser = null, 
     const {getUserByEmail} = useContext(UserContext);
     const [User, setUser] = useState(null);
     const [Role, setRole] = useState(() => {
-        return editUser ? editUser.role.id : 2;
+        return editUser ? editUser.role.id : 1;
     });
 
     const handlerTaskSelection = (task) => {

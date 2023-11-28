@@ -179,7 +179,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
                             }
                         </div>
                         <div className='button-block'>
-                            <Button text='Add' onClick={openModalTask}/>
+                            <Button text='Add' onClick={() => openModalTask(null)}/>
                         </div>
                     </div>
                 </div>
@@ -191,7 +191,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
                 <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={closeModalUser} editUser={selectUser} projectId={projectInfo ? projectInfo.id : 0}/>
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
-                <TaskCreation addTask={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask}/>
+                <TaskCreation addTask={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask} newProject={!selectTask}/>
             </Modal>
 
         </>
