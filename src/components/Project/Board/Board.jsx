@@ -6,33 +6,49 @@ import Input from '../../Controls/Input/Input';
 import TaskInfo from '../../TaskInfo/TaskInfo';
 import Modal from '../../Modal/Modal';
 import TaskCreation from "../../TaskCreation/TaskCreation";
-import {AddUser} from "../../AddUser/AddUser";
-import {getIssueByAssignee} from "../../../Hooks/Issue";
-import {UserContext} from "../../../App";
+import { AddUser } from "../../AddUser/AddUser";
+import {getProjectUsers} from "../../../Hooks/Project";
+import {getIssueByAssignee, updateIssue} from "../../../Hooks/Issue";
+import { UserContext } from "../../../App";
 
 export default function Board() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userList, setUserList] = useState([]);
     const [selectTask, setSelectTask] = useState(null);
     const [tasks, setTasks] = useState([]);
-    const {User} = useContext(UserContext)
+    const { User } = useContext(UserContext);
+
+    const loadTasks = () => {
+        if (User) {
+            getIssueByAssignee(User.id).then((response) => {
+                setTasks(response.data)
+            })
+        }
+    }
 
 
     const openModal = (val) => {
-        setSelectTask(val)
-        setIsModalOpen(true);
+        setSelectTask(val);
+        getProjectUsers(val.projectId).then((res) => {
+            setUserList(res.data);
+            setIsModalOpen(true);
+        });
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
         setSelectTask(null)
     };
+
+    const updateTask = (task) => {
+        const { id = null, name = "", description = "", projectId = "", creationDate = null, dueDate = null, priority = "", assigneeId = "", status = "" } = task;
+        updateIssue(id, name, description, projectId, creationDate, dueDate, priority, assigneeId, status).then(() => {
+            loadTasks();
+        });
+    }
+
     useEffect(() => {
-        if (User) {
-            getIssueByAssignee(User.id).then((response) => {
-                setTasks(response.data)
-            })
-        }
+        loadTasks();
     }, User)
 
     const outputTasks = (status = '') => {
@@ -88,7 +104,7 @@ export default function Board() {
             </div>
 
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <TaskCreation newProject={false} closeModal={closeModal} issue={selectTask} userList={userList}/>
+                <TaskCreation callback={ updateTask } newProject={false} closeModal={closeModal} issue={selectTask} userList={userList}/>
             </Modal>
         </>
     );

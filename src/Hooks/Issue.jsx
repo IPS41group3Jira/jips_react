@@ -7,10 +7,17 @@ const createIssue = (name = "", description = "", projectId = "", dueDate = null
     const creationDate = new Date();
     return Axios.post(`/issue`, { name, description, projectId, creationDate, dueDate, priority, assigneeId, status });
 }
+
+const updateIssue = (id = null, name = "", description = "", projectId = "", creationDate = null,  dueDate = null, priority = "", assigneeId = "", status = "") => {
+    return Axios.put(`/issue/${id}`, { name, description, projectId, creationDate, dueDate, priority, assigneeId, status });
+}
+
 const getIssueByProject = (projectId = "") => {
     return Axios.get(`/issue/project/${projectId}`);
 }
+
 const getIssueByAssignee = (assigneeId = "") => {
     return Axios.get(`issue/assignee/${assigneeId}`)
 }
-export { createIssue, getIssueByProject , getIssueByAssignee};
+
+export { createIssue, updateIssue, getIssueByProject , getIssueByAssignee};

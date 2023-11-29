@@ -51,7 +51,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
     };
 
     const openModalTask = (task) => {
-        setSelectTask(task)
+        setSelectTask(task);
         setIsModalTaskOpen(true);
     };
     const closeModalUser = () => {
@@ -191,7 +191,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
                 <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={closeModalUser} editUser={selectUser} projectId={projectInfo ? projectInfo.id : 0}/>
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
-                <TaskCreation addTask={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask} newProject={!selectTask}/>
+                <TaskCreation callback={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask} newProject={!selectTask}/>
             </Modal>
 
         </>

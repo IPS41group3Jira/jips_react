@@ -16,26 +16,26 @@ import SelectReact from 'react-select';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import Axios from "../../Axios";
 
-export default function TaskCreation({addTask, closeModal, newProject = true, userList = null, issue = null}) {
+export default function TaskCreation({callback, closeModal, newProject = true, userList = null, issue = null}) {
     const [status, setStatus] = useState();
-    const [assigneeId, setAssigneeId] = useState(null)
+    const [assigneeId, setAssigneeId] = useState(issue?.assigneeId || null)
     const [task, setTask] = useState(() => {
-        if (issue) return issue
-        else {
-            return {
-                name: "",
-                description: "",
-                projectId: 3,
-                creationDate: new Date(),
-                dueDate: null,
-                priority: "",
-                assigneeId: "",
-                status: "",
-            }
-        }
+        if (issue) return issue;
+        return {
+            name: "",
+            description: "",
+            projectId: null,
+            creationDate: new Date(),
+            dueDate: null,
+            priority: "",
+            assigneeId: "",
+            status: "",
+        };
     });
+    const [creationDate, setCreationDate] = useState(new Date());
+    const [dueDate, setDueDate] = useState(new Date());
+    const [comments, setComments] = useState([]);
 
-    const [comments, setComments] = useState([])
     useEffect(() => {
         Axios.get(`/comment/issue/${task.id}`).then(comments => {
             setComments(comments.data);
@@ -48,17 +48,16 @@ export default function TaskCreation({addTask, closeModal, newProject = true, us
         console.log(comments)
     }, [comments])
 
-    const [creationDate, setCreationDate] = useState(new Date());
-    const [dueDate, setDueDate] = useState(new Date());
     const options = userList.map(user => ({
         value: user.id,
         label: `${user.firstName} ${user.lastName}`
-    }))
+    }));
+
+    const defaultOption = options.filter(option => option.value == assigneeId)
 
     useEffect(() => {
-        if (!issue) {
-            setTask({...task, creationDate, dueDate, status, assigneeId});
-        }
+        console.log('assignee id:', assigneeId)
+        setTask({...task, creationDate, dueDate, status, assigneeId});
     }, [dueDate, creationDate, status, assigneeId]);
 
     const handleInputChange = ((fieldName, value) => {
@@ -73,7 +72,9 @@ export default function TaskCreation({addTask, closeModal, newProject = true, us
 
     const saveTask = (e) => {
         e.preventDefault();
-        addTask(task);
+        if(typeof callback == 'function')
+            callback(task);
+
         console.log("Task ", task)
         closeModal();
     }
@@ -100,7 +101,7 @@ export default function TaskCreation({addTask, closeModal, newProject = true, us
                     <Form.Group>
                         <Form.Label className="label">Task description</Form.Label>
                         <div>
-                            <Textarea className={"task-description"}
+                            <Textarea className="task-description"
                                       placeholder="Task description" rows="4"
                                       value={task.description}
                                       onChange={(e) => handleInputChange("description", e.target.value)}
@@ -108,7 +109,7 @@ export default function TaskCreation({addTask, closeModal, newProject = true, us
                         </div>
                     </Form.Group>
                     <Form.Group className="task-group">
-                        <Select labelBefore="State:" onChange={onChangeSelect}>
+                        <Select labelBefore="State:" onChange={onChangeSelect} value={task.status}>
                             <Option value="BLOCKED">Blocked</Option>
                             <Option value="OPENED" selected>Opened</Option>
                             <Option value="TO_DO">To do</Option>
@@ -119,7 +120,7 @@ export default function TaskCreation({addTask, closeModal, newProject = true, us
                         <DragDropFiles/>
                         <div className="list-users">
                             <label className="label">Responsible Users</label>
-                            <SelectReact defaultValue={assigneeId} onChange={(val) => setAssigneeId(val.value)}
+                            <SelectReact defaultValue={defaultOption} onChange={(val) => setAssigneeId(val.value)}
                                          options={options} className="basic-single"/>
                         </div>
                         <div className="task-time">
