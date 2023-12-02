@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './Board.css';
 
+
+import { getProjectsByName } from '../../../Hooks/Project'
 import Buttton from '../../Button/Button';
 import Input from '../../Controls/Input/Input';
 import TaskInfo from '../../TaskInfo/TaskInfo';
@@ -15,13 +17,19 @@ export default function Board() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userList, setUserList] = useState([]);
     const [selectTask, setSelectTask] = useState(null);
+    const [tasksList, setTasksList] = useState([])
     const [tasks, setTasks] = useState([]);
-    const { User } = useContext(UserContext);
+    const { User, getUsersByFullName } = useContext(UserContext);
+
+    const [projectsLookup, setProjectLookup] = useState([]);
+    const [projectName, setProjectName] = useState('')
+    const [personLookup, setPersonLookup] = useState([]);
+    const [person, setPerson] = useState('')
 
     const loadTasks = () => {
         if (User) {
             getIssueByAssignee(User.id).then((response) => {
-                setTasks(response.data)
+                setTasksList(response.data)
             })
         }
     }
@@ -49,7 +57,7 @@ export default function Board() {
 
     useEffect(() => {
         loadTasks();
-    }, User)
+    }, [User])
 
     const outputTasks = (status = '') => {
         const availableTasks = tasks.sort((a, b) => {
@@ -70,15 +78,37 @@ export default function Board() {
             </div>
         ))
     }
+
+    useEffect(() => {
+        const projectsIds = projectsLookup.map((p) => p.id);
+        const usersIds = personLookup.map((u) => u.id); 
+        setTasks(tasksList.filter((task) => (projectsIds.includes(task.projectId)) && (usersIds.includes(task.assigneeId))));
+    }, [projectsLookup, personLookup, tasksList])
+
+
+    
+    useEffect(() => {
+        getProjectsByName(projectName).then((projects) => {
+            setProjectLookup(projects.data);
+        })
+    }, [projectName])
+
+    
+    useEffect(() => {
+        getUsersByFullName(person).then((persons) => {
+            setPersonLookup(persons.data);
+        })
+    }, [person])
+
     return (
         <>
             <div className="board">
                 <div className="board__header">
-                    <label name="project-name">Project name</label>
+                    <label>Project name</label>
                     <div className="board__controls">
                         <div>
-                            <Input className="className" name="search" placeholder="Search..."/>
-                            <Input name="pearson-filter" placeholder="Person"/>
+                            <Input name="project-name" placeholder="Project Name..." onChange={(e) => { setProjectName(e.target.value); } } />
+                            <Input name="pearson-filter" placeholder="Person..." onChange={(e) => { setPerson(e.target.value);; } } />
                         </div>
                     </div>
                 </div>

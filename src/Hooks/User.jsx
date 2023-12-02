@@ -61,5 +61,9 @@ export default function useAuth () {
         return Axios.put(`user/${userId}`, {firstName, lastName})
     }
 
-    return { signIn, signUp, User, getUser, getListProjects, logOut, getUserByEmail, updateUser};
+    const getUsersByFullName = (fullName = '') => {
+        return Axios.get(`user/?like=${fullName}`);
+    }
+
+    return { signIn, signUp, User, getUser, getListProjects, logOut, getUserByEmail, updateUser, getUsersByFullName};
 }

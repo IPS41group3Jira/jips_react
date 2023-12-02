@@ -13,7 +13,7 @@
     /* left: 0; */
 }
 
-.board__header [name=project-name] {
+.board__header > label {
     font-weight: 600;
     font-size: 26px;
 }
