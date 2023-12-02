@@ -15,8 +15,9 @@ import SelectReact from 'react-select';
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import Axios from "../../Axios";
+import {FaTrash} from "react-icons/fa6";
 
-export default function TaskCreation({callback, closeModal, newProject = true, userList = null, issue = null}) {
+export default function TaskCreation({callback, closeModal, newProject = true, userList = null, issue = null, deleteTask}) {
     const [status, setStatus] = useState();
     const [assigneeId, setAssigneeId] = useState(issue?.assigneeId || null)
     const [task, setTask] = useState(() => {
@@ -32,17 +33,25 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
             status: "",
         };
     });
-    const [creationDate, setCreationDate] = useState(new Date());
-    const [dueDate, setDueDate] = useState(new Date());
+    const [creationDate, setCreationDate] = useState(() => {
+        if (issue) return new Date(issue.creationDate);
+        return new Date();
+    });
+    const [dueDate, setDueDate] = useState(() => {
+        if (issue) return new Date(issue.dueDate);
+        return new Date;
+    });
     const [comments, setComments] = useState([]);
 
     useEffect(() => {
-        Axios.get(`/comment/issue/${task.id}`).then(comments => {
-            setComments(comments.data);
-        }).catch((err) => {
-            console.log(err)
-        });
-    }, [])
+        if (task.id) {
+            Axios.get(`/comment/issue/${task.id}`).then(comments => {
+                setComments(comments.data);
+            }).catch((err) => {
+                console.log(err)
+            });
+        }
+    }, [task.id])
 
     useEffect(() => {
         console.log(comments)
@@ -72,7 +81,7 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
 
     const saveTask = (e) => {
         e.preventDefault();
-        if(typeof callback == 'function')
+        if (typeof callback == 'function')
             callback(task);
 
         console.log("Task ", task)
@@ -89,15 +98,20 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
         <>
             <div>
                 <Form className="task-creation-form" onSubmit={saveTask}>
-                    <Form.Group>
-                        <Form.Label className="label">Task name</Form.Label>
+                    <div className="task-creation__header">
+                        <Form.Group>
+                            <Form.Label className="label">Task name</Form.Label>
+                            <div>
+                                <Input placeholder="Task name"
+                                       value={task.name}
+                                       onChange={(e) => handleInputChange("name", e.target.value)}
+                                ></Input>
+                            </div>
+                        </Form.Group>
                         <div>
-                            <Input placeholder="Task name"
-                                   value={task.name}
-                                   onChange={(e) => handleInputChange("name", e.target.value)}
-                            ></Input>
+                            {!newProject && <FaTrash className="trash_icon" onClick={deleteTask}/>}
                         </div>
-                    </Form.Group>
+                    </div>
                     <Form.Group>
                         <Form.Label className="label">Task description</Form.Label>
                         <div>
@@ -128,7 +142,7 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
                                 <Form.Label className="label">Requires time</Form.Label>
                                 <div>
                                     <DatePicker selected={creationDate} className="input" placeholderText="Start"
-                                                onChange={(date) => setCreationDate(date)}/>
+                                                onChange={(date) => setCreationDate(date)} disabled={true}/>
                                 </div>
                             </Form.Group>
                             <Form.Group>

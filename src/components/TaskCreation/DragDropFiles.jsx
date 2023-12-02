@@ -35,7 +35,7 @@ export default function DragDropFiles() {
                     onDragOver={dragStartHandler}
                     onDrop={onDropHandler}
                 >
-                    <p className="drag-drop-area__text">Attachments (only for task details)</p>
+                    <p className="drag-drop-area__text">Attachments</p>
                     {
                         files.map((file, index) => {
                             return (

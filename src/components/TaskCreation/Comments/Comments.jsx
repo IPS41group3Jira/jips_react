@@ -7,7 +7,7 @@ export default function Comments({comments}) {
     return (
         <>
             <div className="comments">
-                <span className="comments-title">Comments (only for task details)</span>
+                <span className="comments-title">Comments</span>
                 <div className="comments-wrapper">
                 {
                     comments.map(comment => {

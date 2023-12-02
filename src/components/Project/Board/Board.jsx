@@ -73,7 +73,7 @@ export default function Board() {
                 <TaskInfo
                     title={item.name}
                     commentsCount={3}
-                    createdTime={item.creationDate}
+                    endDate={item.dueDate}
                 />
             </div>
         ))

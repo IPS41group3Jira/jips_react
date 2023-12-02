@@ -8,8 +8,14 @@ import Modal from "../Modal/Modal";
 import {useEffect, useState} from "react";
 import {AddUser} from "../AddUser/AddUser";
 
-import {createProject, addUserToProject, getProjectUsers, deleteUserProject,} from "../../Hooks/Project";
-import {createIssue, getIssueByProject} from "../../Hooks/Issue";
+import {
+    createProject,
+    addUserToProject,
+    getProjectUsers,
+    deleteUserProject,
+    deleteProjectById, getProjectById,
+} from "../../Hooks/Project";
+import {createIssue, deleteIssue, getIssueByProject} from "../../Hooks/Issue";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,6 +23,7 @@ import "react-datepicker/dist/react-datepicker.css";
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import TaskCreation from "../TaskCreation/TaskCreation";
+import {FaTrash} from "react-icons/fa6";
 
 export default function ProjectDetails({onClose, projectInfo}) {
     const [projectDetails, setProjectDetails] = useState(projectInfo ?? {
@@ -30,6 +37,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
     const [userList, setUserList] = useState([]);
     const [isModalOpen, setIsModalUserOpen] = useState(false);
     const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
+    const [canModify, setCanModify] = useState(!projectInfo);
 
     const [startDate, setStartDate] = useState(() => {
         return projectInfo ? new Date(projectInfo.startDate) : new Date()
@@ -82,15 +90,29 @@ export default function ProjectDetails({onClose, projectInfo}) {
         console.log('UserList', userList)
     }
     const deleteUser = (user) => {
-        let isError = false;
         if (user.role.id) {
-            deleteUserProject(projectInfo.id, user.id).then().catch((error) => {
-                isError = true;
-            })
+            deleteUserProject(projectInfo.id, user.id).then(() => {
+                const updateUserList = userList.filter(userOfList => userOfList.id !== user.id);
+                setUserList(updateUserList)
+            }).catch((e) => {
+                console.error(e)})
         }
-        if (!isError) {
-            const updateUserList = userList.filter(userList => userList.id !== user.id);
-            setUserList(updateUserList)
+    }
+    const deleteTask = (issue) => {
+        if (issue.id) {
+            deleteIssue(issue.id).then(() => {
+                const updateTaskList = tasks.filter(taskOfList => taskOfList.id !== issue.id);
+                setTasks(updateTaskList);
+                closeModalTask();
+            }).catch((e) => {
+                console.error(e)})
+        }
+    }
+    const deleteProject = () => {
+        if (projectInfo && canModify) {
+            deleteProjectById(projectInfo.id).then(() => {
+                onClose();
+            })
         }
     }
 
@@ -119,6 +141,10 @@ export default function ProjectDetails({onClose, projectInfo}) {
             })
             getProjectUsers(projectInfo.id).then((response) => {
                 setUserList(response.data)
+            })
+            getProjectById(projectInfo.id).then((response) => {
+                const data = response.data
+                setCanModify(data.canModify)
             })
         }
         console.log(projectInfo)
@@ -160,7 +186,8 @@ export default function ProjectDetails({onClose, projectInfo}) {
                             {
                                 userList.map((user, index) => (
                                     <UserCard key={index} name={`${user.firstName} ${user.lastName}`}
-                                              role={user.role.id ?? user.role} user={user} deleteUser={deleteUser} openModal={() => openModalUser(user)} />
+                                              role={user.role.id ?? user.role} user={user} deleteUser={deleteUser}
+                                              openModal={() => openModalUser(user)}/>
                                 ))
                             }
                         </div>
@@ -174,7 +201,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
                             {tasks.map((item, index) => (
                                 <div onClick={() => openModalTask(item)}>
                                     <TaskInfo key={index} title={item.name}
-                                              commentsCount="0" status={item.status} createdTime={item.creationDate}/>
+                                              commentsCount="0" status={item.status} endDate={item.dueDate}/>
                                 </div>))
                             }
                         </div>
@@ -184,14 +211,17 @@ export default function ProjectDetails({onClose, projectInfo}) {
                     </div>
                 </div>
                 <div className="project-save">
-                    <Button text={"Save"} onClick={saveProject}/>
+                        <Button text={"Save"} onClick={saveProject}/>
+                    {projectInfo && canModify && <FaTrash  className="project_trash" onClick={deleteProject}/>}
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={closeModalUser}>
-                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={closeModalUser} editUser={selectUser} projectId={projectInfo ? projectInfo.id : 0}/>
+                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={closeModalUser}
+                         editUser={selectUser} projectId={projectInfo ? projectInfo.id : 0}/>
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
-                <TaskCreation callback={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask} newProject={!selectTask}/>
+                <TaskCreation callback={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask}
+                              newProject={!selectTask} deleteTask={()=>deleteTask(selectTask)} />
             </Modal>
 
         </>

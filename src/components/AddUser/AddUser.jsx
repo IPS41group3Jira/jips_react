@@ -97,7 +97,7 @@ export const AddUser = ({tasks, addUser, setTasks, closeModal, editUser = null, 
                                     <TaskInfo
                                         title={task.name}
                                         commentsCount={index}
-                                        createdTime="11 hours"/>
+                                        endDate={task.dueDate}/>
                                 </div>
                             ))}
                         </div>

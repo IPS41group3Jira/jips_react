@@ -5,7 +5,7 @@ import {VscAccount} from "react-icons/vsc";
 import Select from '../Controls/Select/Select';
 import Option from '../Controls/Select/Option';
 
-export default function TaskInfo({title, status, commentsCount, createdTime}) {
+export default function TaskInfo({title, status, commentsCount, endDate}) {
     const onChangeSelect = (value, label) => {
         // alert(value);
         console.log(value)
@@ -41,7 +41,7 @@ export default function TaskInfo({title, status, commentsCount, createdTime}) {
                 </Col>
                 <Col>
                     <div className="creation_info">
-                        <span className="time">{parseDate(createdTime)}</span>
+                        <span className="time">{parseDate(endDate)}</span>
                         {status &&
                             <VscAccount className="icon_account"/>
                         }

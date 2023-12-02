@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     gap: 1em;
+    position: relative;
 }
 .project-header {
     display: flex;
@@ -59,4 +60,10 @@
 .project-save {
     display: flex;
     justify-content: center;
+}
+.project_trash {
+    position: absolute;
+    right: 2em;
+    font-size: 1.2em;
+    color: red;
 }

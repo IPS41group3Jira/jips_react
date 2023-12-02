@@ -7,7 +7,14 @@
 .task-description {
     width: 100%;
 }
-
+.task-creation__header {
+    display: flex;
+    justify-content: space-between;
+}
+.trash_icon {
+    color: red;
+    font-size: 1.2em;
+}
 .task-group {
     display: flex;
     justify-content: space-between;

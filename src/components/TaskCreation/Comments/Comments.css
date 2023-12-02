@@ -18,6 +18,10 @@
 .user-name, .comments-title {
     font-weight: 600;
 }
+.comment_date {
+    font-size: 11pt;
+    color: var(--gray-font-color);
+}
 
 .comments-wrapper {
     width: 100%;

@@ -19,5 +19,8 @@ const getIssueByProject = (projectId = "") => {
 const getIssueByAssignee = (assigneeId = "") => {
     return Axios.get(`issue/assignee/${assigneeId}`)
 }
+const deleteIssue = (issueId = "") => {
+    return Axios.delete(`issue/${issueId}`)
+}
 
-export { createIssue, updateIssue, getIssueByProject , getIssueByAssignee};
+export { createIssue, updateIssue, getIssueByProject , getIssueByAssignee, deleteIssue};

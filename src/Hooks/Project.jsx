@@ -16,13 +16,18 @@ const addUserToProject = (projectId = '', userId = '', roleId = '') => {
 const getProjectUsers =  (projectId = '') => {
     return Axios.get(`/project/${projectId}/users`)
 }
-
 const deleteUserProject = (projectId = '', userId = '') => {
     return Axios.delete(`project/${projectId}/user/${userId}`)
 }
 
+const deleteProjectById = (projectId = '') => {
+    return Axios.delete(`project/${projectId}`)
+}
+const getProjectById = (projectId = '') => {
+    return Axios.get(`project/${projectId}`)
+}
 const getProjectsByName = (projectName = '') => {
     return Axios.get(`project/?like=${projectName}`);
 }
 
-export { createProject, addUserToProject , getProjectUsers, deleteUserProject, getProjectsByName};
+export { createProject, addUserToProject , getProjectUsers, deleteUserProject, getProjectsByName, deleteProjectById, getProjectById};
