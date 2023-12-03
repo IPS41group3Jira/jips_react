@@ -29,4 +29,7 @@
     overflow: auto;
     direction: ltr;
 }
+.input-err{
+    color: red;
+}
 

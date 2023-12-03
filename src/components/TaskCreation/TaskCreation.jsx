@@ -15,10 +15,8 @@ import SelectReact from 'react-select';
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import Axios from "../../Axios";
-import {FaTrash} from "react-icons/fa6";
-import {deleteIssue} from "../../Hooks/Issue";
 
-export default function TaskCreation({callback, updateTaskList, closeModal, newProject = true, userList = null, issue = null}) {
+export default function TaskCreation({callback, closeModal, newProject = true, userList = null, issue = null}) {
     const [status, setStatus] = useState();
     const [assigneeId, setAssigneeId] = useState(issue?.assigneeId || null)
     const [task, setTask] = useState(() => {
@@ -34,25 +32,20 @@ export default function TaskCreation({callback, updateTaskList, closeModal, newP
             status: "",
         };
     });
-    const [creationDate, setCreationDate] = useState(() => {
-        if (issue) return new Date(issue.creationDate);
-        return new Date();
-    });
-    const [dueDate, setDueDate] = useState(() => {
-        if (issue) return new Date(issue.dueDate);
-        return new Date;
-    });
+    const [creationDate, setCreationDate] = useState(new Date());
+    const [dueDate, setDueDate] = useState(new Date());
     const [comments, setComments] = useState([]);
+    const [updateComments, setUpdateComments] = useState(0);
 
     useEffect(() => {
-        if (task.id) {
-            Axios.get(`/comment/issue/${task.id}`).then(comments => {
+        if (issue?.id) {
+            Axios.get(`/comment/issue/${issue.id}`).then(comments => {
                 setComments(comments.data);
             }).catch((err) => {
                 console.log(err)
-            });
+            })
         }
-    }, [task.id])
+    }, [updateComments])
 
     useEffect(() => {
         console.log(comments)
@@ -79,14 +72,6 @@ export default function TaskCreation({callback, updateTaskList, closeModal, newP
     const onChangeSelect = (value, label) => {
         setStatus(value);
     }
-    const deleteTask = () => {
-        if (issue.id) {
-            deleteIssue(issue.id).then(() => {
-                updateTaskList();
-                closeModal();
-            })
-        }
-    }
 
     const saveTask = (e) => {
         e.preventDefault();
@@ -97,24 +82,25 @@ export default function TaskCreation({callback, updateTaskList, closeModal, newP
         closeModal();
     }
 
+    const users = ['Emily Smith'];
+
+    function ListItem({title}) {
+        return <li>{title}</li>
+    }
+
     return (
         <>
             <div>
                 <Form className="task-creation-form" onSubmit={saveTask}>
-                    <div className="task-creation__header">
-                        <Form.Group>
-                            <Form.Label className="label">Task name</Form.Label>
-                            <div>
-                                <Input placeholder="Task name"
-                                       value={task.name}
-                                       onChange={(e) => handleInputChange("name", e.target.value)}
-                                ></Input>
-                            </div>
-                        </Form.Group>
+                    <Form.Group>
+                        <Form.Label className="label">Task name</Form.Label>
                         <div>
-                            {!newProject && <FaTrash className="trash_icon" onClick={deleteTask}/>}
+                            <Input placeholder="Task name"
+                                   value={task.name}
+                                   onChange={(e) => handleInputChange("name", e.target.value)}
+                            ></Input>
                         </div>
-                    </div>
+                    </Form.Group>
                     <Form.Group>
                         <Form.Label className="label">Task description</Form.Label>
                         <div>
@@ -145,7 +131,7 @@ export default function TaskCreation({callback, updateTaskList, closeModal, newP
                                 <Form.Label className="label">Requires time</Form.Label>
                                 <div>
                                     <DatePicker selected={creationDate} className="input" placeholderText="Start"
-                                                onChange={(date) => setCreationDate(date)} disabled={true}/>
+                                                onChange={(date) => setCreationDate(date)}/>
                                 </div>
                             </Form.Group>
                             <Form.Group>
@@ -166,7 +152,7 @@ export default function TaskCreation({callback, updateTaskList, closeModal, newP
                             </Form.Group>
                         </div>
                     </Form.Group>
-                    {!newProject && <Comments comments={comments}/>}
+                    {!newProject && <Comments comments={comments} setUpdateComments={setUpdateComments} issue={issue}/>}
                     <div className="btn">
                         <Button text="Save" type="submit"/>
                     </div>
