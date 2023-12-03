@@ -19,12 +19,10 @@ export default function Board() {
     const [selectTask, setSelectTask] = useState(null);
     const [tasksList, setTasksList] = useState([])
     const [tasks, setTasks] = useState([]);
-    const { User, getUsersByFullName } = useContext(UserContext);
+    const { User } = useContext(UserContext);
 
     const [projectsLookup, setProjectLookup] = useState([]);
     const [projectName, setProjectName] = useState('')
-    const [personLookup, setPersonLookup] = useState([]);
-    const [person, setPerson] = useState('')
 
     const loadTasks = () => {
         if (User) {
@@ -34,10 +32,9 @@ export default function Board() {
         }
     }
 
-
     const openModal = (val) => {
         setSelectTask(val);
-        getProjectUsers(val.projectId).then((res) => {
+        getProjectUsers(val.project.id).then((res) => {
             setUserList(res.data);
             setIsModalOpen(true);
         });
@@ -60,30 +57,44 @@ export default function Board() {
     }, [User])
 
     const outputTasks = (status = '') => {
-        const availableTasks = tasks.sort((a, b) => {
-            if (a.priority > b.priority)
-                return 1;
-            else if (a.priority < b.priority)
-                return -1
-            return 0;
-        }).filter((a) => a.status == status);
+        const availableTasks = Object.entries(
+            tasks.sort((a, b) => {
+                if (a.priority < b.priority)
+                    return 1;
+                else if (a.priority > b.priority)
+                    return -1
+                return 0;
+            }).filter((a) => a.status == status)
+        ).reduce((acc, [_, task]) => {
+            if (acc[task.project.name])
+                acc[task.project.name] = [ ...acc[task.project.name], task ];
+            else
+                acc[task.project.name] = [task];
 
-        return availableTasks.map((item) => (
-            <div onClick={() => openModal(item)}>
-                <TaskInfo
-                    title={item.name}
-                    commentsCount={3}
-                    endDate={item.dueDate}
-                />
-            </div>
-        ))
+            return acc;
+        }, {})
+
+        return Object.entries(availableTasks).map(([projectName, projectTasks]) => (
+            <>
+                <label className="task-project-group" key={ projectName }>{projectName}</label>
+                {projectTasks.map((item) => (
+                    <div key={ item.id } onClick={() => openModal(item)}>
+                        <TaskInfo
+                            title={item.name}
+                            commentsCount={3}
+                            endDate={item.dueDate}
+                        />
+                    </div>
+                ))}
+            </>
+
+        ));
     }
 
     useEffect(() => {
         const projectsIds = projectsLookup.map((p) => p.id);
-        const usersIds = personLookup.map((u) => u.id); 
-        setTasks(tasksList.filter((task) => (projectsIds.includes(task.projectId)) && (usersIds.includes(task.assigneeId))));
-    }, [projectsLookup, personLookup, tasksList])
+        setTasks(tasksList.filter((task) => projectsIds.includes(task.project.id)));
+    }, [projectsLookup, tasksList])
 
 
     
@@ -93,13 +104,6 @@ export default function Board() {
         })
     }, [projectName])
 
-    
-    useEffect(() => {
-        getUsersByFullName(person).then((persons) => {
-            setPersonLookup(persons.data);
-        })
-    }, [person])
-
     return (
         <>
             <div className="board">
@@ -107,8 +111,7 @@ export default function Board() {
                     <label>Project name</label>
                     <div className="board__controls">
                         <div>
-                            <Input name="project-name" placeholder="Project Name..." onChange={(e) => { setProjectName(e.target.value); } } />
-                            <Input name="pearson-filter" placeholder="Person..." onChange={(e) => { setPerson(e.target.value);; } } />
+                            <Input name="project-name" placeholder="Project Name..." value={ projectName } onChange={(e) => { setProjectName(e.target.value); console.log(e)} } />
                         </div>
                     </div>
                 </div>
@@ -122,7 +125,7 @@ export default function Board() {
                             ['DONE', 'Closed'],
                             ['BLOCKED', 'Blocked']
                         ].map(([value, label]) => (
-                            <div className="project-stage">
+                            <div key={ label } className="project-stage">
                                 <label className="project-stage__caption">{ label }</label>
                                 <div className="project-stage__tasks">
                                     {outputTasks(value)}

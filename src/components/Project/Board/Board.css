@@ -66,3 +66,8 @@
 
     overflow-y: auto;
 }
+.task-project-group {
+    margin-top: 1em;
+    color: rgb(175, 175, 175);
+    font-size: 0.9em;
+}
