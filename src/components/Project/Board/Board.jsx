@@ -46,8 +46,8 @@ export default function Board() {
     };
 
     const updateTask = (task) => {
-        const { id = null, name = "", description = "", projectId = "", creationDate = null, dueDate = null, priority = "", assigneeId = "", status = "" } = task;
-        updateIssue(id, name, description, projectId, creationDate, dueDate, priority, assigneeId, status).then(() => {
+        const { id = null, name = "", description = "", creationDate = null, dueDate = null, priority = "", status = "" } = task;
+        updateIssue(id, name, description, task.project.id, creationDate, dueDate, priority, task.assignee.id, status).then(() => {
             loadTasks();
         });
     }

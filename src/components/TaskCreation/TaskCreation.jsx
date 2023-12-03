@@ -18,7 +18,7 @@ import Axios from "../../Axios";
 
 export default function TaskCreation({callback, closeModal, newProject = true, userList = null, issue = null}) {
     const [status, setStatus] = useState();
-    const [assigneeId, setAssigneeId] = useState(issue?.assigneeId || null)
+    const [assigneeId, setAssigneeId] = useState(issue?.assignee ? issue.assignee.id : null)
     const [task, setTask] = useState(() => {
         if (issue) return issue;
         return {
