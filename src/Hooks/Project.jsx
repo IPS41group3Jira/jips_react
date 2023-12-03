@@ -8,6 +8,9 @@ const createProject = (name = '', description = '', startDate = null, endDate = 
 
     return Axios.post('/project', { name, description, creationDate, startDate, endDate });
 }
+const updateProject = (projectId = '', name = '', description = '', creationDate = '', startDate = '', endDate = '') => {
+    return Axios.put(`/project/${projectId}`, {name, description ,creationDate, startDate, endDate})
+}
 
 const addUserToProject = (projectId = '', userId = '', roleId = '') => {
     return Axios.post(`/project/${projectId}/user`, { userId, roleId });
@@ -30,4 +33,4 @@ const getProjectsByName = (projectName = '') => {
     return Axios.get(`project/?like=${projectName}`);
 }
 
-export { createProject, addUserToProject , getProjectUsers, deleteUserProject, getProjectsByName, deleteProjectById, getProjectById};
+export { createProject, addUserToProject , getProjectUsers, deleteUserProject, getProjectsByName, deleteProjectById, getProjectById, updateProject};

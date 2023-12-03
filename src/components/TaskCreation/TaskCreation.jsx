@@ -16,8 +16,9 @@ import SelectReact from 'react-select';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import Axios from "../../Axios";
 import {FaTrash} from "react-icons/fa6";
+import {deleteIssue} from "../../Hooks/Issue";
 
-export default function TaskCreation({callback, closeModal, newProject = true, userList = null, issue = null, deleteTask}) {
+export default function TaskCreation({callback, updateTaskList, closeModal, newProject = true, userList = null, issue = null}) {
     const [status, setStatus] = useState();
     const [assigneeId, setAssigneeId] = useState(issue?.assigneeId || null)
     const [task, setTask] = useState(() => {
@@ -78,6 +79,14 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
     const onChangeSelect = (value, label) => {
         setStatus(value);
     }
+    const deleteTask = () => {
+        if (issue.id) {
+            deleteIssue(issue.id).then(() => {
+                updateTaskList();
+                closeModal();
+            })
+        }
+    }
 
     const saveTask = (e) => {
         e.preventDefault();
@@ -86,12 +95,6 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
 
         console.log("Task ", task)
         closeModal();
-    }
-
-    const users = ['Emily Smith'];
-
-    function ListItem({title}) {
-        return <li>{title}</li>
     }
 
     return (

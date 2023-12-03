@@ -13,9 +13,9 @@ import {
     addUserToProject,
     getProjectUsers,
     deleteUserProject,
-    deleteProjectById, getProjectById,
+    deleteProjectById, getProjectById, updateProject,
 } from "../../Hooks/Project";
-import {createIssue, deleteIssue, getIssueByProject} from "../../Hooks/Issue";
+import {createIssue, deleteIssue, getIssueByProject, updateIssue} from "../../Hooks/Issue";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -67,12 +67,31 @@ export default function ProjectDetails({onClose, projectInfo}) {
         setIsModalUserOpen(false);
     };
     const closeModalTask = () => {
+        console.log("close task")
         setIsModalTaskOpen(false);
+        if (projectInfo) {
+            loadIssue();
+        }
         setSelectTask(null);
+
     };
 
     const addTask = (newTask) => {
-        setTasks([...tasks, newTask])
+        if (projectInfo) {
+            if (newTask.id) {
+                //update
+                updateIssue(newTask.id, newTask.name, newTask.description, projectInfo.id, newTask.creationDate, newTask.dueDate, newTask.priority, newTask.assigneeId ?? null, newTask.status).then(() => {
+                    closeModalTask();
+                })
+            } else {
+                //create
+                createIssue(newTask.name, newTask.description, projectInfo.id, newTask.dueDate, newTask.priority, newTask.assigneeId ?? null, newTask.status).then(() => {
+                    closeModalTask();
+                })
+            }
+        } else {
+            setTasks([...tasks, newTask])
+        }
         console.log(tasks)
     }
 
@@ -95,19 +114,11 @@ export default function ProjectDetails({onClose, projectInfo}) {
                 const updateUserList = userList.filter(userOfList => userOfList.id !== user.id);
                 setUserList(updateUserList)
             }).catch((e) => {
-                console.error(e)})
+                console.error(e)
+            })
         }
     }
-    const deleteTask = (issue) => {
-        if (issue.id) {
-            deleteIssue(issue.id).then(() => {
-                const updateTaskList = tasks.filter(taskOfList => taskOfList.id !== issue.id);
-                setTasks(updateTaskList);
-                closeModalTask();
-            }).catch((e) => {
-                console.error(e)})
-        }
-    }
+
     const deleteProject = () => {
         if (projectInfo && canModify) {
             deleteProjectById(projectInfo.id).then(() => {
@@ -120,19 +131,35 @@ export default function ProjectDetails({onClose, projectInfo}) {
         console.log(tasks);
         console.log(userList);
         const {name, description} = projectDetails;
-
-        createProject(name, description, startDate, endDate).then((res) => {
-            const project = res.data;
-            Promise.all(userList.map((user) => addUserToProject(project.id, user.id, user.role))).then(() => {
-                Promise.all(tasks.map((task) => {
-                    createIssue(task.name, task.description, project.id, task.dueDate, task.priority, task.assigneeId ?? null, task.status);
-                })).then(() => {
-                    if (typeof onClose === 'function') {
-                        onClose();
-                    }
+        if (projectInfo) {
+            updateProject(projectInfo.id, name, description, projectInfo.creationDate, startDate, endDate).then(() => {
+                //need add update project list
+                console.log("typeof", typeof onClose)
+                if (typeof onClose === 'function') {
+                    onClose();
+                }
+            })
+        } else {
+            createProject(name, description, startDate, endDate).then((res) => {
+                const project = res.data;
+                Promise.all(userList.map((user) => addUserToProject(project.id, user.id, user.role))).then(() => {
+                    Promise.all(tasks.map((task) => {
+                        createIssue(task.name, task.description, project.id, task.dueDate, task.priority, task.assigneeId ?? null, task.status);
+                    })).then(() => {
+                        if (typeof onClose === 'function') {
+                            onClose();
+                        }
+                    });
                 });
             });
-        });
+        }
+    }
+    const loadIssue = () => {
+        if (projectInfo) {
+            getIssueByProject(projectInfo.id).then((response) => {
+                setTasks(response.data)
+            })
+        }
     }
     useEffect(() => {
         if (projectInfo) {
@@ -211,8 +238,8 @@ export default function ProjectDetails({onClose, projectInfo}) {
                     </div>
                 </div>
                 <div className="project-save">
-                        <Button text={"Save"} onClick={saveProject}/>
-                    {projectInfo && canModify && <FaTrash  className="project_trash" onClick={deleteProject}/>}
+                    <Button text={"Save"} onClick={saveProject}/>
+                    {projectInfo && canModify && <FaTrash className="project_trash" onClick={deleteProject}/>}
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={closeModalUser}>
@@ -221,7 +248,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
                 <TaskCreation callback={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask}
-                              newProject={!selectTask} deleteTask={()=>deleteTask(selectTask)} />
+                              newProject={!selectTask} updateTaskList={loadIssue}/>
             </Modal>
 
         </>

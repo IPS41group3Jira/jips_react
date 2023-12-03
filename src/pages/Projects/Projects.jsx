@@ -17,18 +17,26 @@ export default function Projects() {
     };
 
     const closeModal = () => {
+        console.log("close")
         setIsModalOpen(false);
+        loadProjects();
+        console.log("close2")
     };
+
 
 
     const { getListProjects } = useAuth();
     const [projects, setProjects] = useState(null);
-    useEffect(() => {
+    const loadProjects = () => {
         getListProjects().then((response) => {
+            console.log("update")
             setProjects(response.data);
         }).catch((error) => {
             console.error(error)
         });
+    }
+    useEffect(() => {
+        loadProjects();
     }, []);
     return (
         <>
@@ -39,7 +47,7 @@ export default function Projects() {
                         {
                             projects &&
                             projects.map((project) => (
-                                <ProjectCard key={project.id} project={project} />
+                                <ProjectCard key={project.id} project={project} onUpdate={loadProjects} />
                             ))
                         }
                         <div className="btn_project">
