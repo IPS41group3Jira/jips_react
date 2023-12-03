@@ -3,7 +3,7 @@ import "./Comments.css";
 export default function Comment({comment}) {
     const parseDate = (date) => {
         date = new Date(date);
-        return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
+        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
     return (
         <div>
