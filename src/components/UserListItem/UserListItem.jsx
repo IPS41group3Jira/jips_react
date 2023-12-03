@@ -1,15 +1,25 @@
 import "./UserListItem.css"
 import {VscAccount} from "react-icons/vsc";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {FaAngleDown} from "react-icons/fa6";
 import {FaAngleUp} from "react-icons/fa";
+import {UserContext} from "../../App";
 
-export default function UserListItem({projects}) {
+export default function UserListItem({user}) {
+    const [projects, setProjects] = useState([])
     const [isProjectListVisible, setProjectListVisible] = useState(false);
     const projectToShow = isProjectListVisible ? projects.length : 2;
+    const {User, getListProjectsByUserId} = useContext(UserContext);
     const toggleProjectList = () => {
         setProjectListVisible(!isProjectListVisible);
     }
+    useEffect(() => {
+        if (user.id) {
+            getListProjectsByUserId(user.id).then((resp) => {
+                setProjects(resp.data)
+            })
+        }
+    }, [user])
     return (
         <>
             <div className="user-list-item">
@@ -17,17 +27,13 @@ export default function UserListItem({projects}) {
                     <div>
                         <VscAccount className="icon-account"/>
                         <div className="user-detail">
-                            <label> Emily Smith</label>
+                            <label>{user.firstName} {user.lastName}</label>
                             {
                                 projects.slice(0, projectToShow).map((item) => (
-                                    <p key={item.id}>{item.project_name} ({item.user_role})</p>
+                                    <p key={item.id}>{item.name}</p>
                                 ))
                             }
                         </div>
-                    </div>
-                    <div className="user-manager">
-                        <span>Block</span>
-                        <span>Edit</span>
                     </div>
                 </div>
                 <div className="hidden-control" onClick={toggleProjectList}>

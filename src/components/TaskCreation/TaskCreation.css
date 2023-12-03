@@ -43,6 +43,9 @@
 .css-t3ipsp-control:hover {
     border-color: #000000 !important;
 }
+.task-text {
+    font-weight: bold;
+}
 
 
 

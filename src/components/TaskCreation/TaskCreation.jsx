@@ -15,8 +15,10 @@ import SelectReact from 'react-select';
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import Axios from "../../Axios";
+import {FaTrash} from "react-icons/fa6";
+import {deleteIssue} from "../../Hooks/Issue";
 
-export default function TaskCreation({callback, closeModal, newProject = true, userList = null, issue = null}) {
+export default function TaskCreation({callback, updateTaskList, closeModal, newProject = true, userList = null, issue = null, canModify = false}) {
     const [status, setStatus] = useState();
     const [assigneeId, setAssigneeId] = useState(issue?.assignee ? issue.assignee.id : null)
     const [task, setTask] = useState(() => {
@@ -32,8 +34,14 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
             status: "",
         };
     });
-    const [creationDate, setCreationDate] = useState(new Date());
-    const [dueDate, setDueDate] = useState(new Date());
+    const [creationDate, setCreationDate] = useState(() => {
+        if (issue) return new Date(issue.creationDate);
+        return new Date();
+    });
+    const [dueDate, setDueDate] = useState(() => {
+        if (issue) return new Date(issue.dueDate);
+        return new Date;
+    });
     const [comments, setComments] = useState([]);
     const [updateComments, setUpdateComments] = useState(0);
 
@@ -57,7 +65,7 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
     }));
 
     const defaultOption = options.filter(option => option.value == assigneeId)
-
+    console.log(defaultOption)
     useEffect(() => {
         console.log('assignee id:', assigneeId)
         setTask({...task, creationDate, dueDate, status, assigneeId});
@@ -72,6 +80,14 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
     const onChangeSelect = (value, label) => {
         setStatus(value);
     }
+    const deleteTask = () => {
+        if (issue.id) {
+            deleteIssue(issue.id).then(() => {
+                updateTaskList();
+                closeModal();
+            })
+        }
+    }
 
     const saveTask = (e) => {
         e.preventDefault();
@@ -81,34 +97,39 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
         console.log("Task ", task)
         closeModal();
     }
-
-    const users = ['Emily Smith'];
-
-    function ListItem({title}) {
-        return <li>{title}</li>
+    const parseDate = (date) => {
+        date = new Date(date);
+        return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
     }
 
     return (
         <>
             <div>
                 <Form className="task-creation-form" onSubmit={saveTask}>
-                    <Form.Group>
-                        <Form.Label className="label">Task name</Form.Label>
+                    <div className="task-creation__header">
+                        <Form.Group>
+                            <Form.Label className="label">Task name</Form.Label>
+                            <div>
+                                {canModify && <Input placeholder="Task name"
+                                       value={task.name}
+                                       onChange={(e) => handleInputChange("name", e.target.value)}
+                                ></Input>}
+                                {!canModify && <span className="task-text">{task.name}</span>}
+                            </div>
+                        </Form.Group>
                         <div>
-                            <Input placeholder="Task name"
-                                   value={task.name}
-                                   onChange={(e) => handleInputChange("name", e.target.value)}
-                            ></Input>
+                            {!newProject && canModify && <FaTrash className="trash_icon" onClick={deleteTask}/>}
                         </div>
-                    </Form.Group>
+                    </div>
                     <Form.Group>
                         <Form.Label className="label">Task description</Form.Label>
                         <div>
-                            <Textarea className="task-description"
+                            {canModify && <Textarea className="task-description"
                                       placeholder="Task description" rows="4"
                                       value={task.description}
                                       onChange={(e) => handleInputChange("description", e.target.value)}
-                            ></Textarea>
+                            ></Textarea>}
+                            {!canModify && <div><span className="task-text">{task.description}</span></div>}
                         </div>
                     </Form.Group>
                     <Form.Group className="task-group">
@@ -123,31 +144,35 @@ export default function TaskCreation({callback, closeModal, newProject = true, u
                         <DragDropFiles/>
                         <div className="list-users">
                             <label className="label">Responsible Users</label>
-                            <SelectReact defaultValue={defaultOption} onChange={(val) => setAssigneeId(val.value)}
-                                         options={options} className="basic-single"/>
+                            {canModify && <SelectReact defaultValue={defaultOption} onChange={(val) => setAssigneeId(val.value)}
+                                         options={options} className="basic-single"/>}
+                            {!canModify && <p className="task-text">{defaultOption[0]? defaultOption[0].label : ""}</p>}
                         </div>
                         <div className="task-time">
                             <Form.Group>
                                 <Form.Label className="label">Requires time</Form.Label>
                                 <div>
-                                    <DatePicker selected={creationDate} className="input" placeholderText="Start"
-                                                onChange={(date) => setCreationDate(date)}/>
+                                    {canModify && <DatePicker selected={creationDate} className="input" placeholderText="Start"
+                                                onChange={(date) => setCreationDate(date)} disabled={true}/>}
+                                    {!canModify && <p className="task-text">{parseDate(creationDate)}</p>}
                                 </div>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label className="label">Remaining time</Form.Label>
                                 <div>
-                                    <DatePicker selected={dueDate} className="input" placeholderText="Start"
-                                                onChange={(date) => setDueDate(date)}/>
+                                    {canModify && <DatePicker selected={dueDate} className="input" placeholderText="Start"
+                                                onChange={(date) => setDueDate(date)}/>}
+                                    {!canModify && <p className="task-text">{parseDate(dueDate)}</p>}
                                 </div>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label className="label">Priority</Form.Label>
                                 <div>
-                                    <Input placeholder="Priority"
+                                    {canModify && <Input placeholder="Priority"
                                            value={task.priority}
                                            onChange={(e) => handleInputChange("priority", e.target.value)}
-                                    ></Input>
+                                    ></Input>}
+                                    {!canModify && <p className="task-text">{task.priority}</p>}
                                 </div>
                             </Form.Group>
                         </div>

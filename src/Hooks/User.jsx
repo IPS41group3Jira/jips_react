@@ -44,6 +44,9 @@ export default function useAuth () {
     const getListProjects = () => {
         return Axios.get('/user/projects')
     }
+    const getListProjectsByUserId = (userId = '') => {
+        return Axios.get(`/user/${userId}/projects`)
+    }
 
     const signUp = (email, password, firstName, lastName) => {
         return Axios.post('/user/register', { email, password, firstName, lastName }).then(() => {
@@ -65,5 +68,5 @@ export default function useAuth () {
         return Axios.get(`user/?like=${fullName}`);
     }
 
-    return { signIn, signUp, User, getUser, getListProjects, logOut, getUserByEmail, updateUser, getUsersByFullName};
+    return { signIn, signUp, User, getUser, getListProjects, logOut, getUserByEmail, updateUser, getUsersByFullName, getListProjectsByUserId};
 }

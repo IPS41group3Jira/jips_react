@@ -248,7 +248,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
                 <TaskCreation callback={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask}
-                              newProject={!selectTask} updateTaskList={loadIssue}/>
+                              newProject={!selectTask} updateTaskList={loadIssue} canModify={canModify}/>
             </Modal>
 
         </>
