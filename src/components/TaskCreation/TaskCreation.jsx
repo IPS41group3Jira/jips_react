@@ -5,7 +5,7 @@ import Textarea from "../Controls/Input/Textarea";
 import Option from "../Controls/Select/Option";
 import Select from "../Controls/Select/Select";
 import Button from "../Button/Button";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import DragDropFiles from "./DragDropFiles";
 import Comments from "./Comments/Comments";
 import DatePicker from "react-datepicker";
@@ -18,11 +18,21 @@ import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import Axios from "../../Axios";
 import {FaTrash} from "react-icons/fa6";
 import {deleteIssue} from "../../Hooks/Issue";
+import {UserContext} from "../../App";
 
-export default function TaskCreation({ callback, updateTaskList, closeModal, newProject = true, userList = null, issue = null, canModify = false }) {
+export default function TaskCreation({ callback, updateTaskList, closeModal, newProject = true, userList = null, issue = null, modify = false }) {
     const [newFiles, setNewFiles] = useState([]);
     const [status, setStatus] = useState();
+    const {User, getUser} = useContext(UserContext)
     const [assigneeId, setAssigneeId] = useState(issue?.assignee ? issue.assignee.id : null)
+    const [canModify, setCanModify] = useState(() => {
+        if (!modify && User) {
+            if (User && (issue?.project || issue?.creatorId)) {
+                return User.id === issue.project.creator.id || User.id === issue.creatorId
+            }
+        }
+        return modify
+    })
     const [task, setTask] = useState(() => {
         if (issue) return issue;
         return {
@@ -69,9 +79,6 @@ export default function TaskCreation({ callback, updateTaskList, closeModal, new
         }
     }, [])
 
-    useEffect(() => {
-        console.log(comments)
-    }, [comments])
 
     const options = userList.map(user => ({
         value: user.id,

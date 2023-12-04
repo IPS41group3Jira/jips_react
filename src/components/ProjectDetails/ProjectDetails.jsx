@@ -64,7 +64,6 @@ export default function ProjectDetails({onClose, projectInfo}) {
         setIsModalTaskOpen(true);
     };
     const closeModalUser = () => {
-        console.log(tasks)
         setSelectUser(null);
         setIsModalUserOpen(false);
         if (projectInfo) {
@@ -72,7 +71,6 @@ export default function ProjectDetails({onClose, projectInfo}) {
         }
     };
     const closeModalTask = () => {
-        console.log("close task")
         setIsModalTaskOpen(false);
         if (projectInfo) {
             loadIssue();
@@ -104,7 +102,6 @@ export default function ProjectDetails({onClose, projectInfo}) {
             newTask.attachments = newFiles;
             setTasks([...tasks, newTask])
         }
-        console.log(tasks)
     }
 
     const addUserList = (newUser) => {
@@ -114,11 +111,9 @@ export default function ProjectDetails({onClose, projectInfo}) {
         if (userIndex !== -1) {
             const updateUserList = userList.map((user, index) => (index === userIndex ? newUser : user));
             setUserList(updateUserList);
-            console.log(updateUserList);
         } else {
             setUserList([...userList, newUser]);
         }
-        console.log('UserList', userList)
     }
     const deleteUser = (user) => {
         if (user.role.id) {
@@ -140,13 +135,9 @@ export default function ProjectDetails({onClose, projectInfo}) {
     }
 
     const saveProject = () => {
-        console.log(tasks);
-        console.log(userList);
         const {name, description} = projectDetails;
         if (projectInfo) {
             updateProject(projectInfo.id, name, description, projectInfo.creationDate, startDate, endDate).then(() => {
-                //need add update project list
-                console.log("typeof", typeof onClose)
                 if (typeof onClose === 'function') {
                     onClose();
                 }
@@ -191,7 +182,6 @@ export default function ProjectDetails({onClose, projectInfo}) {
                 console.log(canModify)
             })
         }
-        console.log(projectInfo)
     }, [projectInfo]);
     const parseDate = (date) => {
         date = new Date(date);
@@ -239,7 +229,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
                                 userList.map((user, index) => (
                                     <UserCard key={index} name={`${user.firstName} ${user.lastName}`}
                                               role={user.role.id ?? user.role} user={user} deleteUser={deleteUser}
-                                              openModal={() => openModalUser(user)}/>
+                                              openModal={() => openModalUser(user)} canModify={canModify}/>
                                 ))
                             }
                         </div>
@@ -253,7 +243,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
                             {tasks.map((item, index) => (
                                 <div onClick={() => openModalTask(item)}>
                                     <TaskInfo key={index} title={item.name}
-                                              commentsCount="0" status={item.status} endDate={item.dueDate}/>
+                                              id={item.id} status={item.status} endDate={item.dueDate}/>
                                 </div>))
                             }
                         </div>
@@ -273,7 +263,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
                 <TaskCreation callback={addTask} closeModal={closeModalTask} userList={userList} issue={selectTask}
-                              newProject={!selectTask} updateTaskList={loadIssue} canModify={canModify}/>
+                              newProject={!selectTask} updateTaskList={loadIssue} modify={canModify}/>
             </Modal>
 
         </>

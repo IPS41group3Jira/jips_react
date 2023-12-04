@@ -4,12 +4,25 @@ import {BiCommentDetail} from "react-icons/bi";
 import {VscAccount} from "react-icons/vsc";
 import Select from '../Controls/Select/Select';
 import Option from '../Controls/Select/Option';
+import {useEffect, useState} from "react";
+import {Axios} from "axios";
+import {getComments} from "../../Hooks/Issue";
 
-export default function TaskInfo({title, status, commentsCount, endDate}) {
+export default function TaskInfo({title, status, endDate, id = 0}) {
     const onChangeSelect = (value, label) => {
         // alert(value);
         console.log(value)
     }
+    const [comments, setComments] = useState([])
+    useEffect(() => {
+        if (id !== 0) {
+            getComments(id.toString()).then((resp) => {
+                setComments(resp.data);
+            }).catch((e) => {
+                console.error(e)
+            })
+        }
+    }, [id])
     const parseDate = (date) => {
         date = new Date(date);
         return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
@@ -35,7 +48,7 @@ export default function TaskInfo({title, status, commentsCount, endDate}) {
             <Row className="mt-3">
                 <Col>
                     <div className="comments_info">
-                        <span className="count">{commentsCount}</span>
+                        <span className="count">{comments.length}</span>
                         <BiCommentDetail className="icon_comment"/>
                     </div>
                 </Col>

@@ -87,7 +87,7 @@ export default function Board() {
                     <div key={ item.id } onClick={() => openModal(item)}>
                         <TaskInfo
                             title={item.name}
-                            commentsCount={3}
+                            id={item.id}
                             endDate={item.dueDate}
                         />
                     </div>
@@ -143,7 +143,7 @@ export default function Board() {
             </div>
 
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <TaskCreation callback={ updateTask } newProject={false} closeModal={closeModal} issue={selectTask} userList={userList}/>
+                <TaskCreation callback={ updateTask } newProject={false} closeModal={closeModal} issue={selectTask} userList={userList} updateTaskList={loadTasks}/>
             </Modal>
         </>
     );

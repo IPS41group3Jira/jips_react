@@ -59,10 +59,8 @@ export const AddUser = ({tasksList, addUser, setTasksList, closeModal, editUser 
                 editUser.role = Role;
                 addUser(editUser)
             }
-            console.log(issueEditList)
         }
         if (issueEditList.length !== 0) {
-            console.log(issueEditList)
             Promise.all(issueEditList.map((task) => {
                 updateIssue(task.id, task.name, task.description, task.project.id, task.creationDate, task.dueDate, task.priority, task.assignee, task.status).then(() => {
                     closeModal();
@@ -72,8 +70,6 @@ export const AddUser = ({tasksList, addUser, setTasksList, closeModal, editUser 
         }
 
         setTasksList(tasks);
-        console.log(User);
-        console.log(tasks);
 
         closeModal();
     }
@@ -81,7 +77,6 @@ export const AddUser = ({tasksList, addUser, setTasksList, closeModal, editUser 
         const role = e.target.value;
         setUser({...User, role});
         setRole(role)
-        console.log(tasks)
     }
 
     const handleUserEmailInput = (e) => {
@@ -122,7 +117,7 @@ export const AddUser = ({tasksList, addUser, setTasksList, closeModal, editUser 
                             {tasks.filter((task) => (!task.assignee || task.assignee?.id === User?.id || task.assignee === User?.id) && (!task.assigneeId || task?.assigneeId === User?.id)).map((task, index) => (
                                 <div className="box_item" key={index}>
                                     <Form.Check type="checkbox" className="item_checkbox"
-                                                checked={task.assignee?.id === User?.id || task.assignee === User?.id || task?.assigneeId === User?.id}
+                                                checked={User && (task.assignee?.id === User?.id || task.assignee === User?.id || task?.assigneeId === User?.id)}
                                                 onChange={(e) => handlerTaskSelection(task)}
                                         // checked={indexList.includes(index)}
                                     ></Form.Check>

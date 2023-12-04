@@ -24,4 +24,8 @@ const deleteIssue = (issueId = "") => {
     return Axios.delete(`issue/${issueId}`)
 }
 
-export { createIssue, updateIssue, getIssueByProject , getIssueByAssignee, deleteIssue};
+const getComments = (issueId = "") => {
+    return Axios.get(`/comment/issue/${issueId}`)
+}
+
+export { createIssue, updateIssue, getIssueByProject , getIssueByAssignee, deleteIssue, getComments};
