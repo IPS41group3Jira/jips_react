@@ -1,7 +1,7 @@
 import "./Input.css"
-import { useState } from "react";
+import {forwardRef, useImperativeHandle, useState} from "react";
 
-export default function Input({ className, value, onChange, onBlur, ...attrs }) {
+ const Input = forwardRef(({ className, value, onChange, onBlur, ...attrs }, ref) => {
 
 	const [val, setVal] = useState(value || null);
 
@@ -9,7 +9,10 @@ export default function Input({ className, value, onChange, onBlur, ...attrs }) 
 		if (typeof onChange == 'function') onChange(event);
 		setVal(event.target.value)
 	}
-
+	useImperativeHandle(ref, () => ({
+		clear: () => setVal('')
+	}))
 	className = `input ${className || ''}`;
 	return <input className={className} value={ val } {...attrs} onBlur={onBlur} onChange={handleChange}/>;
-}
+});
+export default Input;

@@ -22,7 +22,16 @@
     font-size: 11pt;
     color: var(--gray-font-color);
 }
-
+.create-comment__body {
+    display: flex;
+}
+.create-comment__body >  button {
+    margin-left: 1em;
+    height: fit-content;
+}
+.create-comment__body > div {
+    width: 100%;
+}
 .comments-wrapper {
     width: 100%;
     max-height: 10em;

@@ -8,30 +8,46 @@ import {FiSearch} from "react-icons/fi";
 import {UserContext} from '../../App';
 import rolesMap from "../../Hooks/Role";
 import {addUserToProject} from "../../Hooks/Project";
+import {updateIssue} from "../../Hooks/Issue";
 
 
-export const AddUser = ({tasks, addUser, setTasks, closeModal, editUser = null, projectId = 0}) => {
+export const AddUser = ({tasksList, addUser, setTasksList, closeModal, editUser = null, projectId = 0}) => {
     const {getUserByEmail} = useContext(UserContext);
-    const [User, setUser] = useState(null);
+    const [User, setUser] = useState(editUser ?? null);
+    const [issueEditList, setIssueEditList] = useState([])
     const [Role, setRole] = useState(() => {
         return editUser ? editUser.role.id : 1;
     });
+    const [tasks, setTasks] = useState(JSON.parse(JSON.stringify(tasksList)))
 
     const handlerTaskSelection = (task) => {
-        task.assigneeId = task.assigneeId ? null : User.id;
-        console.log(task)
+        if (task.id) {
+            task.assignee = task.assignee ? null : User.id;
+            const taskIndex = issueEditList.findIndex(exTask => exTask.id === task.id)
+
+            if (taskIndex !== -1) {
+                const updateList = issueEditList.map((issue, index) => (index === taskIndex ? task : issue));
+                setIssueEditList(updateList);
+            } else {
+                setIssueEditList([...issueEditList, task])
+            }
+
+        } else {
+            task.assigneeId = task.assigneeId ? null : User.id;
+        }
     }
     const saveUser = (e) => {
+        console.log("save")
         e.preventDefault();
 
         if (!editUser) {
             //edit == null
-            if (projectId !==  0){
+            if (projectId !== 0) {
                 addUserToProject(projectId, User.id, User.role)
             }
             addUser(User);
         } else {
-            if (editUser.role.id && Role !== editUser.role.id ){
+            if (editUser.role.id && Role !== editUser.role.id) {
                 console.log(Role)
                 addUserToProject(projectId, editUser.id, Role)
                 editUser.role.id = Role;
@@ -43,8 +59,19 @@ export const AddUser = ({tasks, addUser, setTasks, closeModal, editUser = null, 
                 editUser.role = Role;
                 addUser(editUser)
             }
+            console.log(issueEditList)
         }
-        setTasks(tasks);
+        if (issueEditList.length !== 0) {
+            console.log(issueEditList)
+            Promise.all(issueEditList.map((task) => {
+                updateIssue(task.id, task.name, task.description, task.project.id, task.creationDate, task.dueDate, task.priority, task.assignee, task.status).then(() => {
+                    closeModal();
+                }).catch((e) => {
+                    console.error(e)})
+            }))
+        }
+
+        setTasksList(tasks);
         console.log(User);
         console.log(tasks);
 
@@ -54,6 +81,7 @@ export const AddUser = ({tasks, addUser, setTasks, closeModal, editUser = null, 
         const role = e.target.value;
         setUser({...User, role});
         setRole(role)
+        console.log(tasks)
     }
 
     const handleUserEmailInput = (e) => {
@@ -72,14 +100,17 @@ export const AddUser = ({tasks, addUser, setTasks, closeModal, editUser = null, 
                     <Form.Group>
                         <Form.Label>User email</Form.Label>
                         <div className="add_user_form-input-group">
-                            <Input placeholder="User email" className="add_user_input" value={() => {return editUser ? editUser.email : ''}}
+                            <Input placeholder="User email" className="add_user_input" value={() => {
+                                return editUser ? editUser.email : ''
+                            }}
                                    onBlur={handleUserEmailInput} disabled={!!(editUser)}/>
                             <FiSearch className="icon-search"/>
                         </div>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Role</Form.Label>
-                        <Form.Select className="select__role" aria-label="Role" onChange={onChangeSelectRole} value={Role}>
+                        <Form.Select className="select__role" aria-label="Role" onChange={onChangeSelectRole}
+                                     value={Role}>
                             {Object.entries(rolesMap).map(([id, name]) => (
                                 <option value={id} {...(Role === id ? 'selected' : '')}>{name}</option>
                             ))}
@@ -88,9 +119,10 @@ export const AddUser = ({tasks, addUser, setTasks, closeModal, editUser = null, 
                     <Form.Group className="mt-3">
                         <label>Assign tasks</label>
                         <div className="tasks-box">
-                            {tasks.filter((task) => !task.assigneeId).map((task, index) => (
+                            {tasks.filter((task) => (!task.assignee || task.assignee?.id === User?.id || task.assignee === User?.id) && (!task.assigneeId || task?.assigneeId === User?.id)).map((task, index) => (
                                 <div className="box_item" key={index}>
                                     <Form.Check type="checkbox" className="item_checkbox"
+                                                checked={task.assignee?.id === User?.id || task.assignee === User?.id || task?.assigneeId === User?.id}
                                                 onChange={(e) => handlerTaskSelection(task)}
                                         // checked={indexList.includes(index)}
                                     ></Form.Check>

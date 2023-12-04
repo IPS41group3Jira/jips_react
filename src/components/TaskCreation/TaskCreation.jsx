@@ -79,9 +79,7 @@ export default function TaskCreation({ callback, updateTaskList, closeModal, new
     }));
 
     const defaultOption = options.filter(option => option.value == assigneeId)
-    console.log(defaultOption)
     useEffect(() => {
-        console.log('assignee id:', assigneeId)
         setTask({...task, creationDate, dueDate, status, assigneeId});
     }, [dueDate, creationDate, status, assigneeId]);
 

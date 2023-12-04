@@ -18,15 +18,19 @@ export default function Comments({comments, issue, setUpdateComments}) {
         if (newComment.text.length > 3) {
             Axios.post('/comment', newComment).then(() => {
                 setUpdateComments(prev => prev + 1)
-                newCommentRef.current.value = ''
+                newCommentRef.current.clear()
+                console.log(newCommentRef)
+                setNewComment({
+                    issueId: issue.id,
+                    text: ''
+                });
                 setResMessage("Comment added successfully!")
                 console.log("added comment")
-            }).catch(err => {
+            }).catch((err) => {
                 setResMessage("Error")
                 console.log(err)
             })
-        }
-        else{
+        } else {
             setResMessage("The comment must contain at least 4 characters!")
         }
     }
@@ -53,17 +57,19 @@ export default function Comments({comments, issue, setUpdateComments}) {
                     }
                 </div>
             </div>
-            <input
-                placeholder="Add your comments"
-                className="add-comment-input input"
-                onChange={handleChangeComment}
-                ref={newCommentRef}
-            ></input>
-            {resMessage &&
-                <span className='input-err'>{resMessage}</span>
-            }
-            <div className="btn">
-                <Button text="Add" type="submit" onClick={handleAddComment}/>
+            <div className="create-comment__body">
+                <div>
+                    <Input placeholder="Add your comments"
+                           className="add-comment-input"
+                           onChange={handleChangeComment}
+                           value={newComment.text}
+                           ref={newCommentRef}
+                    />
+                    {resMessage &&
+                        <span className='input-err'>{resMessage}</span>
+                    }
+                </div>
+                <Button text="Send" type="submit" onClick={handleAddComment}/>
             </div>
         </>
     )

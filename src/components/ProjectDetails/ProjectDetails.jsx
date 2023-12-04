@@ -56,7 +56,6 @@ export default function ProjectDetails({onClose, projectInfo}) {
     })
     const openModalUser = (user) => {
         setSelectUser(user);
-        console.log(selectUser)
         setIsModalUserOpen(true);
     };
 
@@ -65,8 +64,12 @@ export default function ProjectDetails({onClose, projectInfo}) {
         setIsModalTaskOpen(true);
     };
     const closeModalUser = () => {
+        console.log(tasks)
         setSelectUser(null);
         setIsModalUserOpen(false);
+        if (projectInfo) {
+            loadIssue();
+        }
     };
     const closeModalTask = () => {
         console.log("close task")
@@ -185,39 +188,48 @@ export default function ProjectDetails({onClose, projectInfo}) {
             getProjectById(projectInfo.id).then((response) => {
                 const data = response.data
                 setCanModify(data.canModify)
+                console.log(canModify)
             })
         }
         console.log(projectInfo)
     }, [projectInfo]);
+    const parseDate = (date) => {
+        date = new Date(date);
+        return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
+    }
     return (
         <>
             <div className='project-details-block'>
                 <div className="project-header">
                     <div>
                         <label>Project Name</label>
-                        <Input className=' project-name' placeholder="Project Name"
+                        {canModify && <Input className=' project-name' placeholder="Project Name"
                                value={projectDetails.name}
                                onChange={(e) => handleInputChange("name", e.target.value)}
-                        ></Input>
+                        ></Input>}
+                        {!canModify && <span className="project-text">{projectDetails.name}</span>}
                     </div>
                     <div className="project-dates">
                         <div>
                             <label>Start</label>
-                            <DatePicker selected={startDate} className="input" placeholderText="Start"
-                                        onChange={(date) => setStartDate(date)}/>
+                            {canModify && <DatePicker selected={startDate} className="input" placeholderText="Start"
+                                        onChange={(date) => setStartDate(date)}/>}
+                            {!canModify && <span className="project-text">{parseDate(startDate)}</span>}
                         </div>
                         <div>
                             <label>End</label>
-                            <DatePicker selected={endDate} className="input" placeholderText="End"
-                                        onChange={(date) => setEndDate(date)}/>
+                            {canModify && <DatePicker selected={endDate} className="input" placeholderText="End"
+                                        onChange={(date) => setEndDate(date)}/>}
+                            {!canModify && <span className="project-text">{parseDate(endDate)}</span>}
                         </div>
                     </div>
                 </div>
                 <div>
                     <label>Description</label>
-                    <Textarea className=' project-info' rows="5" placeholder="Description"
+                    {canModify && <Textarea className=' project-info' rows="5" placeholder="Description"
                               value={projectDetails.description}
-                              onChange={(e) => handleInputChange("description", e.target.value)}></Textarea>
+                              onChange={(e) => handleInputChange("description", e.target.value)}></Textarea>}
+                    {!canModify && <p className="project-text">{projectDetails.description}</p>}
                 </div>
                 <div className='project-details-block__main'>
                     <div>
@@ -232,7 +244,7 @@ export default function ProjectDetails({onClose, projectInfo}) {
                             }
                         </div>
                         <div className='button-block'>
-                            <Button text='Add' onClick={() => openModalUser(null)}/>
+                            {canModify && <Button text='Add' onClick={() => openModalUser(null)}/>}
                         </div>
                     </div>
                     <div className='main-tasks'>
@@ -246,17 +258,17 @@ export default function ProjectDetails({onClose, projectInfo}) {
                             }
                         </div>
                         <div className='button-block'>
-                            <Button text='Add' onClick={() => openModalTask(null)}/>
+                            {canModify && <Button text='Add' onClick={() => openModalTask(null)}/>}
                         </div>
                     </div>
                 </div>
                 <div className="project-save">
-                    <Button text={"Save"} onClick={saveProject}/>
+                    {canModify && <Button text={"Save"} onClick={saveProject}/>}
                     {projectInfo && canModify && <FaTrash className="project_trash" onClick={deleteProject}/>}
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={closeModalUser}>
-                <AddUser tasks={tasks} addUser={addUserList} setTasks={setTasks} closeModal={closeModalUser}
+                <AddUser tasksList={tasks} addUser={addUserList} setTasksList={setTasks} closeModal={closeModalUser}
                          editUser={selectUser} projectId={projectInfo ? projectInfo.id : 0}/>
             </Modal>
             <Modal isOpen={isModalTaskOpen} onClose={closeModalTask}>
