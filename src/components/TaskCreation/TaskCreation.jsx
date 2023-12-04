@@ -11,6 +11,7 @@ import Comments from "./Comments/Comments";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import SelectReact from 'react-select';
+import { getAttachmentsByIssueId } from "../../Hooks/Attachment";
 
 // CSS Modules, react-datepicker-cssmodules.css// 
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
@@ -18,7 +19,8 @@ import Axios from "../../Axios";
 import {FaTrash} from "react-icons/fa6";
 import {deleteIssue} from "../../Hooks/Issue";
 
-export default function TaskCreation({callback, updateTaskList, closeModal, newProject = true, userList = null, issue = null, canModify = false}) {
+export default function TaskCreation({ callback, updateTaskList, closeModal, newProject = true, userList = null, issue = null, canModify = false }) {
+    const [newFiles, setNewFiles] = useState([]);
     const [status, setStatus] = useState();
     const [assigneeId, setAssigneeId] = useState(issue?.assignee ? issue.assignee.id : null)
     const [task, setTask] = useState(() => {
@@ -54,6 +56,18 @@ export default function TaskCreation({callback, updateTaskList, closeModal, newP
             })
         }
     }, [updateComments])
+
+    const [files, setFiles] = useState([]);
+
+
+
+    useEffect(() => {
+        if (issue?.id) {
+            getAttachmentsByIssueId(issue.id).then((resp) => {
+                setFiles(resp.data);
+            });
+        }
+    }, [])
 
     useEffect(() => {
         console.log(comments)
@@ -92,11 +106,12 @@ export default function TaskCreation({callback, updateTaskList, closeModal, newP
     const saveTask = (e) => {
         e.preventDefault();
         if (typeof callback == 'function')
-            callback(task);
+            callback(task, newFiles);
 
         console.log("Task ", task)
         closeModal();
     }
+
     const parseDate = (date) => {
         date = new Date(date);
         return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
@@ -141,7 +156,7 @@ export default function TaskCreation({callback, updateTaskList, closeModal, newP
                             <Option value="IN_TESTING">In testing</Option>
                             <Option value="DONE">Done</Option>
                         </Select>
-                        <DragDropFiles/>
+                        <DragDropFiles filesInfo={files} onChange = { setNewFiles } />
                         <div className="list-users">
                             <label className="label">Responsible Users</label>
                             {canModify && <SelectReact defaultValue={defaultOption} onChange={(val) => setAssigneeId(val.value)}

@@ -6,7 +6,9 @@ import Input from "../Controls/Input/Input";
 import Textarea from "../Controls/Input/Textarea";
 import Modal from "../Modal/Modal";
 import {useEffect, useState} from "react";
-import {AddUser} from "../AddUser/AddUser";
+import { AddUser } from "../AddUser/AddUser";
+
+import { createAttachment } from '../../Hooks/Attachment';
 
 import {
     createProject,
@@ -76,20 +78,27 @@ export default function ProjectDetails({onClose, projectInfo}) {
 
     };
 
-    const addTask = (newTask) => {
+    const addTask = (newTask, newFiles) => {
         if (projectInfo) {
             if (newTask.id) {
                 //update
                 updateIssue(newTask.id, newTask.name, newTask.description, projectInfo.id, newTask.creationDate, newTask.dueDate, newTask.priority, newTask.assigneeId ?? null, newTask.status).then(() => {
                     closeModalTask();
                 })
+                newFiles.map(file => {
+                    createAttachment(newTask.id, file.name, file)
+                })
             } else {
                 //create
-                createIssue(newTask.name, newTask.description, projectInfo.id, newTask.dueDate, newTask.priority, newTask.assigneeId ?? null, newTask.status).then(() => {
+                createIssue(newTask.name, newTask.description, projectInfo.id, newTask.dueDate, newTask.priority, newTask.assigneeId ?? null, newTask.status).then((resp) => {
                     closeModalTask();
+                    newFiles.map(file => {
+                        createAttachment(resp.data.id, file.name, file)
+                    })
                 })
             }
         } else {
+            newTask.attachments = newFiles;
             setTasks([...tasks, newTask])
         }
         console.log(tasks)
@@ -144,7 +153,11 @@ export default function ProjectDetails({onClose, projectInfo}) {
                 const project = res.data;
                 Promise.all(userList.map((user) => addUserToProject(project.id, user.id, user.role))).then(() => {
                     Promise.all(tasks.map((task) => {
-                        createIssue(task.name, task.description, project.id, task.dueDate, task.priority, task.assigneeId ?? null, task.status);
+                        createIssue(task.name, task.description, project.id, task.dueDate, task.priority, task.assigneeId ?? null, task.status).then((resp) => {
+                            task.attachments.map(file => {
+                                createAttachment(resp.data.id, file.name, file)
+                            })
+                        });
                     })).then(() => {
                         if (typeof onClose === 'function') {
                             onClose();

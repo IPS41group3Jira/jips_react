@@ -12,6 +12,7 @@ import { AddUser } from "../../AddUser/AddUser";
 import {getProjectUsers} from "../../../Hooks/Project";
 import {getIssueByAssignee, updateIssue} from "../../../Hooks/Issue";
 import { UserContext } from "../../../App";
+import { createAttachment } from '../../../Hooks/Attachment';
 
 export default function Board() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,11 +46,16 @@ export default function Board() {
         setSelectTask(null)
     };
 
-    const updateTask = (task) => {
+    const updateTask = (task, newFiles) => {
         const { id = null, name = "", description = "", creationDate = null, dueDate = null, priority = "", status = "" } = task;
         updateIssue(id, name, description, task.project.id, creationDate, dueDate, priority, task.assignee.id, status).then(() => {
             loadTasks();
         });
+
+        newFiles.map(file => {
+            createAttachment(id, file.name, file)
+        });
+
     }
 
     useEffect(() => {

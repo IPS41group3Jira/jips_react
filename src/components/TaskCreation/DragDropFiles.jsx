@@ -1,8 +1,10 @@
 import "./DragDropFiles.css";
-import {useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
+import { downloadFile } from "../../Hooks/Attachment";
 
-export default function DragDropFiles() {
+export default function DragDropFiles({ filesInfo = [], onChange }) {
     const [files, setFiles] = useState([])
+    const [newFiles, setNewFiles] = useState([]);
     const [drag, setDrag] = useState(false)
     const inputFileRef = useRef(null)
 
@@ -17,19 +19,26 @@ export default function DragDropFiles() {
 
     const onDropHandler = (e) => {
         e.preventDefault()
-        setFiles([...e.dataTransfer.files])
+        setNewFiles([...newFiles, ...e.dataTransfer.files]);
+        setFiles([...files, ...e.dataTransfer.files]);
     }
 
     const selectFileHandler = (e) => {
         e.preventDefault()
-        setFiles([...inputFileRef.current.files])
+        console.log(inputFileRef.current.files)
+        setNewFiles([...newFiles, ...inputFileRef.current.files]);
+        setFiles([...files, ...inputFileRef.current.files]);
     }
+
+    useEffect(() => { setFiles(filesInfo); }, [filesInfo])
+
+    useEffect(() => { if (typeof onChange == 'function') onChange(newFiles); }, [newFiles])
 
     return (
         <>
             <div className="drag-drop-wrapper">
                 <div
-                    className={drag ? "drag-drop-area" + " " + "drag-drop-area-active" : "drag-drop-area"}
+                    className={ "files-wrapper " + (drag ? "drag-drop-area" + " " + "drag-drop-area-active" : "drag-drop-area")}
                     onDragStart={dragStartHandler}
                     onDragLeave={dragLeaveHandler}
                     onDragOver={dragStartHandler}
@@ -39,8 +48,9 @@ export default function DragDropFiles() {
                     {
                         files.map((file, index) => {
                             return (
-                                <div key={index}>
-                                    <span>{file.name}</span><br/>
+                                <div key={index} className="file-name" onClick={() => { file.id && downloadFile(file.id, file?.name || file?.fileName) }}>
+                                    <span>{file?.name || file?.fileName}</span>
+                                    {!file?.id && (<span>new</span>)}
                                 </div>
                             )
                         })

@@ -2,14 +2,15 @@ import Axios from '../Axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"
+import dateFormat from './DateFormat';
 
 const createIssue = (name = "", description = "", projectId = "", dueDate = null, priority = "", assigneeId = "", status = "") => {
     const creationDate = new Date();
-    return Axios.post(`/issue`, { name, description, projectId, creationDate, dueDate, priority, assigneeId, status });
+    return Axios.post(`/issue`, { name, description, projectId, creationDate: dateFormat(creationDate), dueDate: dateFormat(dueDate), priority, assigneeId, status });
 }
 
 const updateIssue = (id = null, name = "", description = "", projectId = "", creationDate = null,  dueDate = null, priority = "", assigneeId = "", status = "") => {
-    return Axios.put(`/issue/${id}`, { name, description, projectId, creationDate, dueDate, priority, assigneeId, status });
+    return Axios.put(`/issue/${id}`, { name, description, projectId, creationDate: dateFormat(creationDate), dueDate: dateFormat(dueDate), priority, assigneeId, status });
 }
 
 const getIssueByProject = (projectId = "") => {

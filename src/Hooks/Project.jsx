@@ -2,14 +2,15 @@ import Axios from '../Axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"
+import dateFormat from './DateFormat';
 
 const createProject = (name = '', description = '', startDate = null, endDate = null) => {
     const creationDate = new Date();
 
-    return Axios.post('/project', { name, description, creationDate, startDate, endDate });
+return Axios.post('/project', { name, description, creationDate: dateFormat(creationDate), startDate: dateFormat(startDate), endDate: dateFormat(endDate) });
 }
 const updateProject = (projectId = '', name = '', description = '', creationDate = '', startDate = '', endDate = '') => {
-    return Axios.put(`/project/${projectId}`, {name, description ,creationDate, startDate, endDate})
+    return Axios.put(`/project/${projectId}`, {name, description , creationDate: dateFormat(creationDate), startDate: dateFormat(startDate), endDate: dateFormat(endDate)})
 }
 
 const addUserToProject = (projectId = '', userId = '', roleId = '') => {
